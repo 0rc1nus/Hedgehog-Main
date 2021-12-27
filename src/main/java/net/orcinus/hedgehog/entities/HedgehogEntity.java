@@ -93,8 +93,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     private int snifingTicks;
     @Nullable
     private UUID persistentAngerTarget;
-    private float interestedAngle;
-    private float interestedAngleO;
     private Potion potion = Potions.EMPTY;
     private static final Map<DyeColor, Item> ITEM_BY_DYE = Util.make(Maps.newEnumMap(DyeColor.class), (map) -> {
         map.put(DyeColor.WHITE, Items.WHITE_WOOL);
@@ -381,23 +379,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
             this.setTarget(null);
             this.setScaredTicks(this.getScaredTicks() - 1);
         }
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-        if (this.isAlive()) {
-            this.interestedAngleO = this.interestedAngle;
-            if (this.isInterested()) {
-                this.interestedAngle += (1.0F - this.interestedAngle) * 0.4F;
-            } else {
-                this.interestedAngle += (0.0F - this.interestedAngle) * 0.4F;
-            }
-        }
-    }
-
-    public float getHeadRollAngle(float angle) {
-        return Mth.lerp(angle, this.interestedAngleO, this.interestedAngle) * 0.15F * (float)Math.PI;
     }
 
     @Override

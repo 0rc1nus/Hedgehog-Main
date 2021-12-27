@@ -150,7 +150,6 @@ public class HedgehogModel<T extends HedgehogEntity> extends EntityModel<T> {
 		this.right_back_leg.visible = !entity.isInSittingPose();
 		this.left_front_leg.visible = !entity.isInSittingPose();
 		this.right_front_leg.visible = !entity.isInSittingPose();
-		this.head.xRot = entity.getHeadRollAngle(ageInTicks);
 		if (entity.isInSittingPose()) {
 			this.head.getChild("ear").setPos(0.0F, 1.0F, -1.5F);
 			this.body.setPos(0.0F, 26.5F, -3.0F);
