@@ -1,0 +1,16 @@
+{
+  "ambientocclusion": false,
+  "textures": {
+    "particle": "hedgehog:block/kiwi_vines",
+    "kiwi_vines": "hedgehog:block/kiwi_vines"
+  },
+  "elements": [
+    {   "from": [ 0, 0, 0.1 ],
+      "to": [ 16, 16, 0.1 ],
+      "faces": {
+        "north": { "uv": [ 16, 0, 0, 16 ], "texture": "#kiwi_vines" },
+        "south": { "uv": [ 0, 0, 16, 16 ], "texture": "#kiwi_vines" }
+      }
+    }
+  ]
+}

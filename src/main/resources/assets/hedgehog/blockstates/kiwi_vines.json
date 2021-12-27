@@ -1,0 +1,323 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "up": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "x": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "x": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "x": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "x": 270,
+        "uvlock": true
+      }
+    },
+
+
+
+    {
+      "when": {
+        "north": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines"
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom"
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom"
+      }
+    },
+
+
+
+    {
+      "when": {
+        "west": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 270,
+        "uvlock": true
+      }
+    },
+
+
+
+    {
+      "when": {
+        "south": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 180,
+        "uvlock": true
+      }
+    },
+
+
+
+    {
+      "when": {
+        "east": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "y": 90,
+        "uvlock": true
+      }
+    },
+
+
+
+    {
+      "when": {
+        "down": "true",
+        "kiwi": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "x": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines",
+        "x": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "kiwi": "true"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "x": 90,
+        "uvlock": true
+      }
+    },
+    {
+      "when": {
+        "up": "false",
+        "north": "false",
+        "west": "false",
+        "south": "false",
+        "east": "false",
+        "down": "false"
+      },
+      "apply": {
+        "model": "hedgehog:block/kiwi_vines_bloom",
+        "x": 90,
+        "uvlock": true
+      }
+    }
+  ]
+}
