@@ -196,16 +196,31 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        if (this.getBandColor() != null) {
-            tag.putByte("BandColor", (byte) this.getBandColor().getId());
-        }
         tag.putString("Potion", Registry.POTION.toString());
-        tag.putBoolean("Anointed", this.isAnointed());
         tag.putInt("ScaredTicks", this.getScaredTicks());
         tag.putInt("PotionTicks", this.getPotionTicks());
         tag.putInt("AssistanceTicks", this.getAssistanceTicks());
         tag.putBoolean("instantaneous", this.isInstantaneous());
+        tag.putBoolean("Anointed", this.isAnointed());
+        if (this.getBandColor() != null) {
+            tag.putByte("BandColor", (byte) this.getBandColor().getId());
+        }
         this.addPersistentAngerSaveData(tag);
+    }
+
+    @Override
+    public void readAdditionalSaveData(CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        this.setScaredTicks(tag.getInt("ScaredTicks"));
+        this.setPotionTicks(tag.getInt("PotionTicks"));
+        this.setAssistanceTicks(tag.getInt("AssistanceTicks"));
+        this.setAnointed(tag.getBoolean("Anointed"));
+        this.setIsInstantaneous(tag.getBoolean("Instantaneous"));
+        this.readPersistentAngerSaveData(this.level, tag);
+        if (tag.contains("BandColor", 99)) {
+            this.setBandColor(DyeColor.byId(tag.getInt("BandColor")));
+        }
+        this.setPotion(PotionUtils.getPotion(tag));
     }
 
     public int getAssistanceTicks() {
@@ -238,21 +253,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
 
     public void setAnointed(boolean anointed) {
         this.entityData.set(ANOINTED, anointed);
-    }
-
-    @Override
-    public void readAdditionalSaveData(CompoundTag tag) {
-        super.readAdditionalSaveData(tag);
-        this.setScaredTicks(tag.getInt("ScaredTicks"));
-        this.setAnointed(tag.getBoolean("Anointed"));
-        this.setIsInstantaneous(tag.getBoolean("Instantaneous"));
-        this.readPersistentAngerSaveData(this.level, tag);
-        this.setPotionTicks(tag.getInt("PotionTicks"));
-        this.setAssistanceTicks(tag.getInt("AssistanceTicks"));
-        if (tag.contains("BandColor", 99)) {
-            this.setBandColor(DyeColor.byId(tag.getInt("BandColor")));
-        }
-        this.setPotion(PotionUtils.getPotion(tag));
     }
 
     public int getSnifingTicks() {
