@@ -6,7 +6,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -70,6 +70,7 @@ import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogMeleeAttackGoal;
 import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogNearestAttackableTargetGoal;
 import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogOwnerHurtByTargetGoal;
 import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogOwnerHurtTargetGoal;
+import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogPanicGoal;
 import net.orcinus.hedgehog.entities.ai.hedgehog.HedgehogRandomLookAroundGal;
 import net.orcinus.hedgehog.init.HEntities;
 import net.orcinus.hedgehog.init.HItems;
@@ -88,8 +89,9 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     private static final EntityDataAccessor<Boolean> ANOINTED = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_INSTANTANEOUS = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Boolean> IS_INTERESTED = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.BOOLEAN);
-    private static final EntityDataAccessor<Boolean> IS_FED_WITH_KIWI = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.BOOLEAN);
+    private static final EntityDataAccessor<Integer> EFFECT_COLOR = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
+    private final Map<MobEffect, MobEffectInstance> anointedEffects = Maps.newHashMap();
     private int snifingTicks;
     @Nullable
     private UUID persistentAngerTarget;
@@ -123,16 +125,17 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
         this.goalSelector.addGoal(1, new HedgehogAfraidOfSkullGoal(this));
-        this.goalSelector.addGoal(2, new SitWhenOrderedToGoal(this));
-        this.goalSelector.addGoal(3, new HedgehogEatSpiderEyeGoal(this));
-        this.goalSelector.addGoal(4, new LeapAtTargetGoal(this, 0.4F));
-        this.goalSelector.addGoal(5, new HedgehogMeleeAttackGoal(this, 1.0D, true));
-        this.goalSelector.addGoal(6, new HedgehogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
-        this.goalSelector.addGoal(7, new HedgehogBreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(8, new WaterAvoidingRandomStrollGoal(this, 1.0D));
-        this.goalSelector.addGoal(9, new HedgehogBegGoal(this, 8.0F));
-        this.goalSelector.addGoal(10, new HedgehogLookAtPlayerGoal(this, Player.class, 8.0F));
-        this.goalSelector.addGoal(10, new HedgehogRandomLookAroundGal(this));
+        this.goalSelector.addGoal(2, new HedgehogPanicGoal(this));
+        this.goalSelector.addGoal(3, new SitWhenOrderedToGoal(this));
+        this.goalSelector.addGoal(4, new HedgehogEatSpiderEyeGoal(this));
+        this.goalSelector.addGoal(5, new LeapAtTargetGoal(this, 0.4F));
+        this.goalSelector.addGoal(6, new HedgehogMeleeAttackGoal(this, 1.0D, true));
+        this.goalSelector.addGoal(7, new HedgehogFollowOwnerGoal(this, 1.0D, 10.0F, 2.0F, false));
+        this.goalSelector.addGoal(8, new HedgehogBreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(9, new WaterAvoidingRandomStrollGoal(this, 1.0D));
+        this.goalSelector.addGoal(10, new HedgehogBegGoal(this, 8.0F));
+        this.goalSelector.addGoal(11, new HedgehogLookAtPlayerGoal(this, Player.class, 8.0F));
+        this.goalSelector.addGoal(11, new HedgehogRandomLookAroundGal(this));
         this.targetSelector.addGoal(1, new HedgehogOwnerHurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new HedgehogOwnerHurtTargetGoal(this));
         this.targetSelector.addGoal(3, (new HurtByTargetGoal(this, Fox.class)).setAlertOthers());
@@ -149,10 +152,10 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         this.entityData.define(ANGER_TIME, 0);
         this.entityData.define(SCARED_TICKS, 0);
         this.entityData.define(ASSISTANCE_TICKS, 0);
+        this.entityData.define(EFFECT_COLOR, 0);
         this.entityData.define(IS_INTERESTED, false);
         this.entityData.define(IS_INSTANTANEOUS, false);
         this.entityData.define(ANOINTED, false);
-        this.entityData.define(IS_FED_WITH_KIWI, false);
     }
 
     @Override
@@ -194,7 +197,8 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("Potion", Registry.POTION.toString());
+        tag.putString("Potion", Registry.POTION.getKey(this.potion).toString());
+        tag.putInt("EffectColor", this.getEffectColor());
         tag.putInt("ScaredTicks", this.getScaredTicks());
         tag.putInt("PotionTicks", this.getPotionTicks());
         tag.putInt("AssistanceTicks", this.getAssistanceTicks());
@@ -203,22 +207,48 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         if (this.getBandColor() != null) {
             tag.putByte("BandColor", (byte) this.getBandColor().getId());
         }
+        if (!this.anointedEffects.isEmpty()) {
+            ListTag listTag = new ListTag();
+            for (MobEffectInstance effectInstance : this.anointedEffects.values()) {
+                listTag.add(effectInstance.save(new CompoundTag()));
+            }
+            tag.put("AnointedEffects", listTag);
+        }
         this.addPersistentAngerSaveData(tag);
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        this.setEffectColor(tag.getInt("EffectColor"));
         this.setScaredTicks(tag.getInt("ScaredTicks"));
         this.setPotionTicks(tag.getInt("PotionTicks"));
         this.setAssistanceTicks(tag.getInt("AssistanceTicks"));
         this.setAnointed(tag.getBoolean("Anointed"));
         this.setIsInstantaneous(tag.getBoolean("Instantaneous"));
         this.readPersistentAngerSaveData(this.level, tag);
+        this.setPotion(PotionUtils.getPotion(tag));
         if (tag.contains("BandColor", 99)) {
             this.setBandColor(DyeColor.byId(tag.getInt("BandColor")));
         }
-        this.setPotion(PotionUtils.getPotion(tag));
+        if (tag.contains("AnointedEffects", 9)) {
+            ListTag listTag = tag.getList("AnointedEffects", 10);
+            for (int i = 0; i < listTag.size(); i++) {
+                CompoundTag compoundTag = listTag.getCompound(i);
+                MobEffectInstance mobeffectinstance = MobEffectInstance.load(compoundTag);
+                if (mobeffectinstance != null) {
+                    this.anointedEffects.put(mobeffectinstance.getEffect(), mobeffectinstance);
+                }
+            }
+        }
+    }
+
+    public int getEffectColor() {
+        return this.entityData.get(EFFECT_COLOR);
+    }
+
+    public void setEffectColor(int effectColor) {
+        this.entityData.set(EFFECT_COLOR, effectColor);
     }
 
     public int getAssistanceTicks() {
@@ -297,7 +327,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     @Override
     public void baseTick() {
         super.baseTick();
-        if (this.hasPotion()) {
+        if (this.hasPotion() && this.getPotionTicks() > 0) {
             this.level.broadcastEntityEvent(this, (byte)8);
         }
         if (this.isAnointed()) {
@@ -306,15 +336,13 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     }
 
     @Override
+    public void tick() {
+        super.tick();
+    }
+
+    @Override
     public void aiStep() {
         super.aiStep();
-        List<Player> players = this.level.getEntitiesOfClass(Player.class, this.getBoundingBox().inflate(32.0D));
-        for (Player player : players) {
-            if (player.isAlive()) {
-                TranslatableComponent component = new TranslatableComponent("The Potion Ticks are " + this.getPotionTicks());
-                player.sendMessage(component, player.getUUID());
-            }
-        }
         List<Fox> foxes = this.level.getEntitiesOfClass(Fox.class, this.getBoundingBox().inflate(3.0D));
         List<LivingEntity> closestLivings = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.6D), (entity -> {
             if (entity instanceof Player) {
@@ -333,7 +361,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                     if (nearbyMobs instanceof TamableAnimal) {
                         if (((TamableAnimal) nearbyMobs).isTame()) continue;
                     }
-                    if (this.hasPotion()) {
+                    if (this.hasPotion() && this.getPotionTicks() > 0) {
                         if (!this.level.isClientSide()) {
                             for (MobEffectInstance mobEffectInstance : this.potion.getEffects()) {
                                 MobEffect effect = mobEffectInstance.getEffect();
@@ -362,7 +390,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         if (this.getPotionTicks() > 0) {
             this.setPotionTicks(this.getPotionTicks() - 1);
         }
-        if (this.getPotionTicks() == 0 && !this.isInstantaneous()) {
+        if (this.getPotionTicks() == 0 && this.potion != Potions.EMPTY) {
             this.setPotion(Potions.EMPTY);
         }
         if (random.nextInt(15) == 0) {
@@ -383,122 +411,19 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
 
     @Override
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
-//        ItemStack stack = player.getItemInHand(hand);
-//        if (this.level.isClientSide) {
-//            boolean flag = this.isOwnedBy(player) || this.isTame() || stack.is(Items.APPLE) || stack.is(HItems.KIWI.get()) && !this.isTame();
-//            return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-//        } else {
-//            if (stack.getItem() == Items.MILK_BUCKET) {
-//                this.kill();
-//                ItemStack itemstack1 = ItemUtils.createFilledResult(stack, player, Items.BUCKET.getDefaultInstance());
-//                player.setItemInHand(hand, itemstack1);
-//                return InteractionResult.SUCCESS;
-//            }
-//            else if (stack.is(Items.SPIDER_EYE)&& !this.hasPotion() && !this.isAnointed() && this.getScaredTicks() == 0 && !this.isBaby()) {
-//                Vec3 vec3 = new Vec3(((double) random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double) random.nextFloat() - 0.5D) * 0.1D);
-//                vec3 = vec3.xRot(-this.getXRot() * ((float)Math.PI / 180F));
-//                vec3 = vec3.yRot(-this.getYRot() * ((float)Math.PI / 180F));
-//                double d0 = (double)(-random.nextFloat()) * 0.6D - 0.3D;
-//                Vec3 vec31 = new Vec3(((double) random.nextFloat() - 0.5D) * 0.8D, d0, 1.0D + ((double) random.nextFloat() - 0.5D) * 0.4D);
-//                vec31 = vec31.add(this.getX(), this.getEyeY(), this.getZ());
-//                ((ServerLevel)this.level).sendParticles(new ItemParticleOption(ParticleTypes.ITEM, new ItemStack(Items.SPIDER_EYE)), vec31.x, vec31.y, vec31.z, 1, vec3.x, vec3.y + 0.05D, vec3.z, 0.5F);
-//                this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
-//                this.setAnointed(true);
-//                if (!player.getAbilities().instabuild) {
-//                    stack.shrink(1);
-//                }
-//                return InteractionResult.SUCCESS;
-//            }
-//            else if (this.potion == Potions.EMPTY && stack.getItem() instanceof PotionItem && this.isAnointed() && !this.isBaby()) {
-//                Potion potion = PotionUtils.getPotion(stack);
-//                List<MobEffectInstance> instance = potion.getEffects();
-//                for (MobEffectInstance effectInstance : instance) {
-//                    if (!effectInstance.getEffect().isInstantenous()) {
-//                        this.setPotionTicks(effectInstance.getDuration());
-//                    } else {
-//                        this.setIsInstantaneous(true);
-//                    }
-//                }
-//                this.setPotion(potion);
-//                this.setAnointed(false);
-//                stack.shrink(1);
-//                if (stack.isEmpty()) {
-//                    player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
-//                }  else if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
-//                    player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
-//                }
-//                return InteractionResult.SUCCESS;
-//            }
-//            if (this.isTame()) {
-//                if (this.isFood(stack) && this.getHealth() < this.getMaxHealth()) {
-//                    if (!player.getAbilities().instabuild) {
-//                        stack.shrink(1);
-//                    }
-//                    this.heal((float)stack.getItem().getFoodProperties().getNutrition());
-//                    this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
-//                    return InteractionResult.SUCCESS;
-//                }
-//                if (!(stack.getItem() instanceof DyeItem || stack.getItem() instanceof BlockItem)) {
-//                    InteractionResult result = super.mobInteract(player, hand);
-//                    if ((!result.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-//                        this.setOrderedToSit(!this.isOrderedToSit());
-//                        this.jumping = false;
-//                        this.navigation.stop();
-//                        this.setTarget(null);
-//                        return InteractionResult.SUCCESS;
-//                    }
-//                }
-//                for (DyeColor dyeColor : ITEM_BY_DYE.keySet()) {
-//                    Item item = ITEM_BY_DYE.get(dyeColor);
-//                    if (stack.getItem() == item) {
-//                        this.setBandColor(dyeColor);
-//                        if (!player.getAbilities().instabuild) {
-//                            stack.shrink(1);
-//                        }
-//                        return InteractionResult.SUCCESS;
-//                    }
-//                }
-//                DyeColor dyecolor = ((DyeItem)stack.getItem()).getDyeColor();
-//                if (dyecolor != this.getBandColor()) {
-//                    if (this.getBandColor().getId() != -1) {
-//                        this.setBandColor(dyecolor);
-//                        if (!player.getAbilities().instabuild) {
-//                            stack.shrink(1);
-//                        }
-//                        return InteractionResult.SUCCESS;
-//                    }
-//                }
-//            }
-//            else if (this.getScaredTicks() == 0 && (stack.is(HItems.KIWI.get()) || stack.is(Items.APPLE))) {
-//                if (!player.getAbilities().instabuild) {
-//                    stack.shrink(1);
-//                }
-//                if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
-//                    this.tame(player);
-//                    this.navigation.stop();
-//                    this.setTarget(null);
-//                    this.setOrderedToSit(true);
-//                    this.level.broadcastEntityEvent(this, (byte)7);
-//                } else {
-//                    this.level.broadcastEntityEvent(this, (byte)6);
-//                }
-//                return InteractionResult.SUCCESS;
-//            }
-//            return super.mobInteract(player, hand);
-//        }
-        ItemStack itemstack = player.getItemInHand(hand);
-        Item item = itemstack.getItem();
+        ItemStack stack = player.getItemInHand(hand);
+        Item item = stack.getItem();
         if (this.level.isClientSide) {
-            boolean flag = this.isOwnedBy(player) || this.isTame() || itemstack.is(Items.BONE) && !this.isTame() && !this.isAngry();
+            boolean flag = this.isOwnedBy(player) || this.isTame() || stack.is(Items.BONE) && !this.isTame() && !this.isAngry();
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         } else {
-            if (itemstack.is(Items.MILK_BUCKET)) {
+            if (stack.is(Items.MILK_BUCKET)) {
                 this.kill();
-                ItemStack itemstack1 = ItemUtils.createFilledResult(itemstack, player, Items.BUCKET.getDefaultInstance());
-                player.setItemInHand(hand, itemstack1);
+                ItemStack stack1 = ItemUtils.createFilledResult(stack, player, Items.BUCKET.getDefaultInstance());
+                player.setItemInHand(hand, stack1);
                 return InteractionResult.SUCCESS;
             }
-            if (itemstack.is(Items.SPIDER_EYE) && this.getScaredTicks() == 0 && !this.isBaby() && !this.hasPotion() && !this.isAnointed()) {
+            if (stack.is(Items.SPIDER_EYE) && this.getScaredTicks() == 0 && !this.isBaby() && !this.hasPotion() && !this.isAnointed()) {
                 for (int i = 0; i < UniformInt.of(40, 80).sample(random); i++){
                     Vec3 vec3 = new Vec3(((double) random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double) random.nextFloat() - 0.5D) * 0.1D);
                     vec3 = vec3.xRot(-this.getXRot() * ((float) Math.PI / 180F));
@@ -511,12 +436,12 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                 this.playSound(SoundEvents.GENERIC_EAT, 1.0F, 1.0F);
                 this.setAnointed(true);
                 if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
+                    stack.shrink(1);
                 }
                 return InteractionResult.SUCCESS;
             }
-            if (!this.isBaby() && itemstack.getItem() instanceof PotionItem && this.isAnointed() && !this.hasPotion()) {
-                Potion potion = PotionUtils.getPotion(itemstack);
+            if (!this.isBaby() && stack.getItem() instanceof PotionItem && this.isAnointed() && !this.hasPotion()) {
+                Potion potion = PotionUtils.getPotion(stack);
                 List<MobEffectInstance> instance = potion.getEffects();
                 for (MobEffectInstance effectInstance : instance) {
                     if (!effectInstance.getEffect().isInstantenous()) {
@@ -524,12 +449,14 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                     } else {
                         this.setIsInstantaneous(true);
                     }
+                    //TODO: CHANGE THIS TO BE MORE EFFICIENT
+                    this.setEffectColor(effectInstance.getEffect().getColor());
                 }
                 this.setPotion(potion);
                 this.setAnointed(false);
-                itemstack.shrink(1);
+                stack.shrink(1);
                 if (!player.getAbilities().instabuild) {
-                    if (itemstack.isEmpty()) {
+                    if (stack.isEmpty()) {
                         player.setItemInHand(hand, new ItemStack(Items.GLASS_BOTTLE));
                     } else if (!player.getInventory().add(new ItemStack(Items.GLASS_BOTTLE))) {
                         player.drop(new ItemStack(Items.GLASS_BOTTLE), false);
@@ -538,12 +465,12 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                 return InteractionResult.SUCCESS;
             }
             if (this.isTame()) {
-                if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
-                    if (itemstack.is(HItems.KIWI.get())) {
+                if (this.isFood(stack) && this.getHealth() < this.getMaxHealth()) {
+                    if (stack.is(HItems.KIWI.get())) {
                         this.setAssistanceTicks(1200);
                     }
                     if (!player.getAbilities().instabuild) {
-                        itemstack.shrink(1);
+                        stack.shrink(1);
                     }
 
                     this.heal((float)item.getFoodProperties().getNutrition());
@@ -552,10 +479,10 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                 }
                 for (DyeColor dyeColor : ITEM_BY_DYE.keySet()) {
                     Item dyeItem = ITEM_BY_DYE.get(dyeColor);
-                    if (itemstack.getItem() == dyeItem) {
+                    if (stack.getItem() == dyeItem) {
                         this.setBandColor(dyeColor);
                         if (!player.getAbilities().instabuild) {
-                            itemstack.shrink(1);
+                            stack.shrink(1);
                         }
                         return InteractionResult.SUCCESS;
                     }
@@ -566,7 +493,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                         this.setOrderedToSit(!this.isOrderedToSit());
                         this.jumping = false;
                         this.navigation.stop();
-                        this.setTarget((LivingEntity)null);
+                        this.setTarget(null);
                         return InteractionResult.SUCCESS;
                     }
 
@@ -577,21 +504,21 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                     if (this.getBandColor().getId() != -1) {
                         this.setBandColor(dyecolor);
                         if (!player.getAbilities().instabuild) {
-                            itemstack.shrink(1);
+                            stack.shrink(1);
                         }
                     }
 
                     return InteractionResult.SUCCESS;
                 }
-            } else if ((itemstack.is(HItems.KIWI.get()) || itemstack.is(Items.APPLE)) && !this.isAngry() && this.getScaredTicks() == 0) {
+            } else if ((stack.is(HItems.KIWI.get()) || stack.is(Items.APPLE)) && !this.isAngry() && this.getScaredTicks() == 0) {
                 if (!player.getAbilities().instabuild) {
-                    itemstack.shrink(1);
+                    stack.shrink(1);
                 }
 
                 if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
                     this.tame(player);
                     this.navigation.stop();
-                    this.setTarget((LivingEntity)null);
+                    this.setTarget(null);
                     this.setOrderedToSit(true);
                     this.level.broadcastEntityEvent(this, (byte)7);
                 } else {
@@ -609,11 +536,21 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     public void handleEntityEvent(byte id) {
         super.handleEntityEvent(id);
         if (id == 8) {
-            int i = PotionUtils.getColor(potion);
-            double d0 = (double) (i >> 16 & 255) / 255.0D;
-            double d1 = (double) (i >> 8 & 255) / 255.0D;
-            double d2 = (double) (i & 255) / 255.0D;
-            this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
+            int i = this.getEffectColor();
+            if (i > 0) {
+                boolean flag;
+                if (this.isInvisible()) {
+                    flag = this.random.nextInt(15) == 0;
+                } else {
+                    flag = this.random.nextBoolean();
+                }
+                if (flag) {
+                    double d0 = (double) (i >> 16 & 255) / 255.0D;
+                    double d1 = (double) (i >> 8 & 255) / 255.0D;
+                    double d2 = (double) (i & 255) / 255.0D;
+                    this.level.addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
+                }
+            }
         }
         if (id == 9) {
             if (random.nextInt(15) == 0) {

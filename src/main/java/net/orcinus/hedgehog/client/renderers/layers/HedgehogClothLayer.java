@@ -1,11 +1,14 @@
 package net.orcinus.hedgehog.client.renderers.layers;
 
+import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.Util;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -14,6 +17,9 @@ import net.orcinus.hedgehog.client.models.HedgehogModel;
 import net.orcinus.hedgehog.client.renderers.HedgehogRenderer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
 import net.orcinus.hedgehog.init.HModelLayers;
+
+import java.util.List;
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class HedgehogClothLayer extends RenderLayer<HedgehogEntity, EntityModel<HedgehogEntity>> {
@@ -49,7 +55,8 @@ public class HedgehogClothLayer extends RenderLayer<HedgehogEntity, EntityModel<
         if (entity.isTame() && !entity.isInvisible() && entity.getScaredTicks() == 0) {
             DyeColor color = entity.getBandColor();
             int id = color.getId();
-            coloredCutoutModelCopyLayerRender(this.getParentModel(), this.model, TEXTURE_LOCATION[id], stack, source, packedLight, entity, limbSwing, limbSwingAmount, p_117356_, p_117355_, p_117357_, p_117358_, 1.0F, 1.0F, 1.0F);
+            ResourceLocation texture = TEXTURE_LOCATION[id];
+            coloredCutoutModelCopyLayerRender(this.getParentModel(), this.model, texture, stack, source, packedLight, entity, limbSwing, limbSwingAmount, p_117356_, p_117355_, p_117357_, p_117358_, 1.0F, 1.0F, 1.0F);
         }
     }
 }

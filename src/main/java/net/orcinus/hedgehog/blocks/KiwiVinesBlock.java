@@ -1,7 +1,6 @@
 package net.orcinus.hedgehog.blocks;
 
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
@@ -20,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.orcinus.hedgehog.init.HItems;
 
-import java.util.Map;
 import java.util.Random;
 
 public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock {
