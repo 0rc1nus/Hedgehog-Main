@@ -91,7 +91,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     private static final EntityDataAccessor<Boolean> IS_INTERESTED = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.BOOLEAN);
     private static final EntityDataAccessor<Integer> EFFECT_COLOR = SynchedEntityData.defineId(HedgehogEntity.class, EntityDataSerializers.INT);
     private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-    private final Map<MobEffect, MobEffectInstance> anointedEffects = Maps.newHashMap();
     private int snifingTicks;
     @Nullable
     private UUID persistentAngerTarget;
@@ -207,13 +206,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         if (this.getBandColor() != null) {
             tag.putByte("BandColor", (byte) this.getBandColor().getId());
         }
-        if (!this.anointedEffects.isEmpty()) {
-            ListTag listTag = new ListTag();
-            for (MobEffectInstance effectInstance : this.anointedEffects.values()) {
-                listTag.add(effectInstance.save(new CompoundTag()));
-            }
-            tag.put("AnointedEffects", listTag);
-        }
         this.addPersistentAngerSaveData(tag);
     }
 
@@ -230,16 +222,6 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         this.setPotion(PotionUtils.getPotion(tag));
         if (tag.contains("BandColor", 99)) {
             this.setBandColor(DyeColor.byId(tag.getInt("BandColor")));
-        }
-        if (tag.contains("AnointedEffects", 9)) {
-            ListTag listTag = tag.getList("AnointedEffects", 10);
-            for (int i = 0; i < listTag.size(); i++) {
-                CompoundTag compoundTag = listTag.getCompound(i);
-                MobEffectInstance mobeffectinstance = MobEffectInstance.load(compoundTag);
-                if (mobeffectinstance != null) {
-                    this.anointedEffects.put(mobeffectinstance.getEffect(), mobeffectinstance);
-                }
-            }
         }
     }
 
