@@ -309,7 +309,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     @Override
     public void baseTick() {
         super.baseTick();
-        if (this.hasPotion() && this.getPotionTicks() > 0) {
+        if (this.hasPotion() && (this.getPotionTicks() > 0 || this.isInstantaneous())) {
             this.level.broadcastEntityEvent(this, (byte)8);
         }
         if (this.isAnointed()) {
@@ -343,7 +343,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                     if (nearbyMobs instanceof TamableAnimal) {
                         if (((TamableAnimal) nearbyMobs).isTame()) continue;
                     }
-                    if (this.hasPotion() && this.getPotionTicks() > 0) {
+                    if (this.hasPotion() && (this.getPotionTicks() > 0 || this.isInstantaneous())) {
                         if (!this.level.isClientSide()) {
                             for (MobEffectInstance mobEffectInstance : this.potion.getEffects()) {
                                 MobEffect effect = mobEffectInstance.getEffect();
@@ -372,7 +372,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         if (this.getPotionTicks() > 0) {
             this.setPotionTicks(this.getPotionTicks() - 1);
         }
-        if (this.getPotionTicks() == 0 && this.potion != Potions.EMPTY) {
+        if (!this.isInstantaneous() && this.getPotionTicks() == 0 && this.potion != Potions.EMPTY) {
             this.setPotion(Potions.EMPTY);
         }
         if (random.nextInt(15) == 0) {
