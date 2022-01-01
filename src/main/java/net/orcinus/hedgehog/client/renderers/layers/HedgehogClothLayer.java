@@ -1,30 +1,25 @@
 package net.orcinus.hedgehog.client.renderers.layers;
 
-import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.Util;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.animal.axolotl.Axolotl;
 import net.minecraft.world.item.DyeColor;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
+import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
 import net.orcinus.hedgehog.client.renderers.HedgehogRenderer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
 import net.orcinus.hedgehog.init.HModelLayers;
 
-import java.util.List;
-import java.util.Map;
-
 @OnlyIn(Dist.CLIENT)
 public class HedgehogClothLayer extends RenderLayer<HedgehogEntity, EntityModel<HedgehogEntity>> {
     //TODO: If you're reading this, I'm sorry. I'll probably find a more efficient way in the future.
-    private static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[]{
+    private static final ResourceLocation[] TEXTURE_LOCATION = new ResourceLocation[] {
             new ResourceLocation(Hedgehog.MODID, "textures/entity/clothes/white_hedgehog_cloth.png"),
             new ResourceLocation(Hedgehog.MODID, "textures/entity/clothes/orange_hedgehog_cloth.png"),
             new ResourceLocation(Hedgehog.MODID, "textures/entity/clothes/magenta_hedgehog_cloth.png"),

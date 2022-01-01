@@ -1,6 +1,7 @@
 package net.orcinus.hedgehog.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Vector3f;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -12,6 +13,8 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
 import net.orcinus.hedgehog.client.models.HedgehogScaredModel;
+import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
+import net.orcinus.hedgehog.client.models.old.OldHedgehogScaredModel;
 import net.orcinus.hedgehog.client.renderers.layers.HedgehogClothLayer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
 import net.orcinus.hedgehog.init.HModelLayers;
@@ -32,11 +35,24 @@ public class HedgehogRenderer extends MobRenderer<HedgehogEntity, EntityModel<He
     }
 
     @Override
+    protected void setupRotations(HedgehogEntity entity, PoseStack stack, float animationProgress, float bodyYaw, float tickDelta) {
+        super.setupRotations(entity, stack, animationProgress, bodyYaw, tickDelta);
+        if (entity.isInWater()) {
+            stack.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
+            stack.mulPose(Vector3f.XN.rotationDegrees(20.0F));
+            stack.translate(0.0D, -0.6D, -0.1D);
+        }
+    }
+
+    @Override
     public void render(HedgehogEntity entity, float p_115456_, float p_115457_, PoseStack stack, MultiBufferSource source, int packedLight) {
         if (entity.getScaredTicks() > 0) {
             this.model = this.scared;
         } else {
             this.model = this.normal;
+        }
+        if (entity.isInSittingPose()) {
+            stack.translate(0.0d, -0.04d, 0.0d);
         }
         super.render(entity, p_115456_, p_115457_, stack, source, packedLight);
     }

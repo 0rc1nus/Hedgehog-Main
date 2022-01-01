@@ -19,12 +19,7 @@ public class HedgehogPanicGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.hedgehog.isAlive() && this.isUserWithMilkAlive() != null && this.hedgehog.getScaredTicks() == 0;
-    }
-
-    @Override
-    public boolean canContinueToUse() {
-        return super.canContinueToUse();
+        return this.hedgehog.isAlive() && this.isUserWithMilkAlive() != null;
     }
 
     @Override

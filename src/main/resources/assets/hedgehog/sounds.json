@@ -1,0 +1,40 @@
+{
+  "entity.hedgehog.ambient": {
+    "sounds": [
+      "hedgehog:entity/hedgehog/ambient",
+      "hedgehog:entity/hedgehog/ambient1",
+      "hedgehog:entity/hedgehog/ambient2",
+      "hedgehog:entity/hedgehog/ambient3"
+    ],
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.ambient"
+  },
+  "entity.hedgehog.scared": {
+    "sounds": [
+      "hedgehog:entity/hedgehog/scared",
+      "hedgehog:entity/hedgehog/scared1",
+      "hedgehog:entity/hedgehog/scared2",
+      "hedgehog:entity/hedgehog/scared3"
+    ],
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.scared"
+  },
+  "entity.hedgehog.eating": {
+    "sounds": [
+      "minecraft:mob/fox/eat1",
+      "minecraft:mob/fox/eat2",
+      "minecraft:mob/fox/eat3"
+    ],
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.eating"
+  },
+  "entity.hedgehog.hurt": {
+    "sounds": [
+      "hedgehog:entity/hedgehog/hurt"
+    ],
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.hurt"
+  },
+  "entity.hedgehog.death": {
+    "sounds": [
+      "hedgehog:entity/hedgehog/death"
+    ],
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.death"
+  }
+}

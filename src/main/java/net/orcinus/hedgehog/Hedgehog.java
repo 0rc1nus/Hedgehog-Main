@@ -13,6 +13,7 @@ import net.orcinus.hedgehog.events.WorldEvents;
 import net.orcinus.hedgehog.init.HBlocks;
 import net.orcinus.hedgehog.init.HEntities;
 import net.orcinus.hedgehog.init.HItems;
+import net.orcinus.hedgehog.init.HSoundEvents;
 import net.orcinus.hedgehog.init.HSpawnPlacements;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,6 +31,7 @@ public class Hedgehog {
         HBlocks.BLOCKS.register(modEventBus);
         HItems.ITEMS.register(modEventBus);
         HEntities.ENTITY_TYPES.register(modEventBus);
+        HSoundEvents.SOUNDEVENTS.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new MobEvents());
         MinecraftForge.EVENT_BUS.register(new WorldEvents());
