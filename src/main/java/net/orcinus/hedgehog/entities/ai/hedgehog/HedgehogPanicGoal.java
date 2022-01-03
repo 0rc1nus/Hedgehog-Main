@@ -19,12 +19,12 @@ public class HedgehogPanicGoal extends Goal {
 
     @Override
     public boolean canUse() {
-        return this.hedgehog.isAlive() && this.isUserWithMilkAlive() != null;
+        return this.hedgehog.isAlive() && this.isUserScary() != null;
     }
 
     @Override
     public void tick() {
-        if (this.isUserWithMilkAlive() != null) {
+        if (this.isUserScary() != null) {
             this.hedgehog.setTarget(null);
             this.hedgehog.getNavigation().stop();
             this.hedgehog.setJumping(false);
@@ -32,7 +32,7 @@ public class HedgehogPanicGoal extends Goal {
         }
     }
 
-    private LivingEntity isUserWithMilkAlive() {
+    private LivingEntity isUserScary() {
         List<LivingEntity> possibles = Lists.newArrayList();
         List<LivingEntity> list = this.hedgehog.level.getEntitiesOfClass(LivingEntity.class, this.hedgehog.getBoundingBox().inflate(3.0D));
         for (LivingEntity livingEntity : list) {
