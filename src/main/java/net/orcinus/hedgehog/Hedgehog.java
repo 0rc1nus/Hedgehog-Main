@@ -10,11 +10,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.orcinus.hedgehog.events.MobEvents;
 import net.orcinus.hedgehog.events.WorldEvents;
-import net.orcinus.hedgehog.init.HBlocks;
-import net.orcinus.hedgehog.init.HEntities;
-import net.orcinus.hedgehog.init.HItems;
-import net.orcinus.hedgehog.init.HSoundEvents;
-import net.orcinus.hedgehog.init.HSpawnPlacements;
+import net.orcinus.hedgehog.init.HedgehogBlocks;
+import net.orcinus.hedgehog.init.HedgehogEntities;
+import net.orcinus.hedgehog.init.HedgehogFeatures;
+import net.orcinus.hedgehog.init.HedgehogItems;
+import net.orcinus.hedgehog.init.HedgehogSoundEvents;
+import net.orcinus.hedgehog.init.HedgehogSpawnPlacements;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,10 +29,11 @@ public class Hedgehog {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::clientSetup);
-        HBlocks.BLOCKS.register(modEventBus);
-        HItems.ITEMS.register(modEventBus);
-        HEntities.ENTITY_TYPES.register(modEventBus);
-        HSoundEvents.SOUNDEVENTS.register(modEventBus);
+        HedgehogBlocks.BLOCKS.register(modEventBus);
+        HedgehogItems.ITEMS.register(modEventBus);
+        HedgehogEntities.ENTITY_TYPES.register(modEventBus);
+        HedgehogSoundEvents.SOUNDEVENTS.register(modEventBus);
+        HedgehogFeatures.FEATURES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new MobEvents());
         MinecraftForge.EVENT_BUS.register(new WorldEvents());
@@ -40,11 +42,11 @@ public class Hedgehog {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        HSpawnPlacements.register();
+        HedgehogSpawnPlacements.register();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        ItemBlockRenderTypes.setRenderLayer(HBlocks.KIWI.get(), RenderType.cutout());
+        ItemBlockRenderTypes.setRenderLayer(HedgehogBlocks.KIWI.get(), RenderType.cutout());
     }
 
 }

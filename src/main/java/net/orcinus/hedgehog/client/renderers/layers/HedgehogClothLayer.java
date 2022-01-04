@@ -11,10 +11,9 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
-import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
 import net.orcinus.hedgehog.client.renderers.HedgehogRenderer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
-import net.orcinus.hedgehog.init.HModelLayers;
+import net.orcinus.hedgehog.init.HedgehogModelLayers;
 
 @OnlyIn(Dist.CLIENT)
 public class HedgehogClothLayer extends RenderLayer<HedgehogEntity, EntityModel<HedgehogEntity>> {
@@ -41,7 +40,7 @@ public class HedgehogClothLayer extends RenderLayer<HedgehogEntity, EntityModel<
 
     public HedgehogClothLayer(HedgehogRenderer hedgehogRenderer, EntityModelSet modelSet) {
         super(hedgehogRenderer);
-        this.model = new HedgehogModel<>(modelSet.bakeLayer(HModelLayers.HEDGEHOG_DECOR));
+        this.model = new HedgehogModel<>(modelSet.bakeLayer(HedgehogModelLayers.HEDGEHOG_DECOR));
     }
 
     @Override

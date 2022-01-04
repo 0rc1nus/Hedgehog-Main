@@ -11,21 +11,21 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
-import net.orcinus.hedgehog.init.HEntities;
-import net.orcinus.hedgehog.init.HItems;
+import net.orcinus.hedgehog.init.HedgehogEntities;
+import net.orcinus.hedgehog.init.HedgehogItems;
 
 @Mod.EventBusSubscriber(modid = Hedgehog.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MobEvents {
 
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
-        event.put(HEntities.HEDGEHOG.get(), HedgehogEntity.createAttributes().build());
+        event.put(HedgehogEntities.HEDGEHOG.get(), HedgehogEntity.createAttributes().build());
     }
 
     @SubscribeEvent
     public void onWanderingTraderInit(WandererTradesEvent event) {
         for (int i = 0; i < 2; i++) {
-            event.getGenericTrades().add(new BasicItemListing(1, new ItemStack(HItems.KIWI.get(), 1), 2, 1));
+            event.getGenericTrades().add(new BasicItemListing(1, new ItemStack(HedgehogItems.KIWI.get(), 1), 2, 1));
         }
     }
 

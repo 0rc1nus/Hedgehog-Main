@@ -7,7 +7,7 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import net.orcinus.hedgehog.Hedgehog;
 
-public class HSoundEvents {
+public class HedgehogSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUNDEVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, Hedgehog.MODID);
 

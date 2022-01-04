@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
-import net.orcinus.hedgehog.init.HItems;
+import net.orcinus.hedgehog.init.HedgehogItems;
 
 import javax.annotation.Nullable;
 import java.util.EnumSet;
@@ -62,7 +62,7 @@ public class HedgehogBegGoal extends Goal {
     private boolean playerHoldingInteresting(Player p_25067_) {
         for(InteractionHand interactionhand : InteractionHand.values()) {
             ItemStack itemstack = p_25067_.getItemInHand(interactionhand);
-            if (this.hedgehog.isTame() && itemstack.is(HItems.KIWI.get())) {
+            if (this.hedgehog.isTame() && itemstack.is(HedgehogItems.KIWI.get())) {
                 return true;
             }
 

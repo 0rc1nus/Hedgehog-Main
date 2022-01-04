@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
-import net.orcinus.hedgehog.init.HItems;
+import net.orcinus.hedgehog.init.HedgehogItems;
 
 import java.util.Random;
 
@@ -41,7 +41,7 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
             PROPERTY_BY_DIRECTION.forEach((direction, bl) -> {
                 BooleanProperty booleanproperty = getFaceProperty(direction);
                 if (state.hasProperty(booleanproperty) && state.getValue(booleanproperty)) {
-                    Block.popResource(world, pos, new ItemStack(HItems.KIWI.get(), 1));
+                    Block.popResource(world, pos, new ItemStack(HedgehogItems.KIWI.get(), 1));
                 }
             });
             world.setBlock(pos, state.setValue(KIWI, false), 2);

@@ -13,11 +13,9 @@ import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
 import net.orcinus.hedgehog.client.models.HedgehogScaredModel;
-import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
-import net.orcinus.hedgehog.client.models.old.OldHedgehogScaredModel;
 import net.orcinus.hedgehog.client.renderers.layers.HedgehogClothLayer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
-import net.orcinus.hedgehog.init.HModelLayers;
+import net.orcinus.hedgehog.init.HedgehogModelLayers;
 
 @OnlyIn(Dist.CLIENT)
 public class HedgehogRenderer extends MobRenderer<HedgehogEntity, EntityModel<HedgehogEntity>> {
@@ -29,8 +27,8 @@ public class HedgehogRenderer extends MobRenderer<HedgehogEntity, EntityModel<He
     private final EntityModel<HedgehogEntity> normal = this.getModel();
 
     public HedgehogRenderer(EntityRendererProvider.Context context) {
-        super(context, new HedgehogModel<>(context.bakeLayer(HModelLayers.HEDGEHOG)), 0.4F);
-        this.scared = new HedgehogScaredModel<>(context.bakeLayer(HModelLayers.HEDGEHOG_SCARED));
+        super(context, new HedgehogModel<>(context.bakeLayer(HedgehogModelLayers.HEDGEHOG)), 0.4F);
+        this.scared = new HedgehogScaredModel<>(context.bakeLayer(HedgehogModelLayers.HEDGEHOG_SCARED));
         this.addLayer(new HedgehogClothLayer(this, context.getModelSet()));
     }
 

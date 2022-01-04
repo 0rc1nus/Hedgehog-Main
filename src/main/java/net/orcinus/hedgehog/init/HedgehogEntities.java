@@ -9,7 +9,7 @@ import net.minecraftforge.registries.RegistryObject;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
 
-public class HEntities {
+public class HedgehogEntities {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Hedgehog.MODID);
 

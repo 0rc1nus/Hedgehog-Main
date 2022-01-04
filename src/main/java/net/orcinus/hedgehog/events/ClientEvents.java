@@ -7,25 +7,23 @@ import net.minecraftforge.fml.common.Mod;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
 import net.orcinus.hedgehog.client.models.HedgehogScaredModel;
-import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
-import net.orcinus.hedgehog.client.models.old.OldHedgehogScaredModel;
 import net.orcinus.hedgehog.client.renderers.HedgehogRenderer;
-import net.orcinus.hedgehog.init.HEntities;
-import net.orcinus.hedgehog.init.HModelLayers;
+import net.orcinus.hedgehog.init.HedgehogEntities;
+import net.orcinus.hedgehog.init.HedgehogModelLayers;
 
 @Mod.EventBusSubscriber(modid = Hedgehog.MODID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 public class ClientEvents {
 
     @SubscribeEvent
     public static void registerEntityDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-        event.registerLayerDefinition(HModelLayers.HEDGEHOG, HedgehogModel::createBodyLayer);
-        event.registerLayerDefinition(HModelLayers.HEDGEHOG_SCARED, HedgehogScaredModel::createBodyLayer);
-        event.registerLayerDefinition(HModelLayers.HEDGEHOG_DECOR, HedgehogModel::createBodyLayer);
+        event.registerLayerDefinition(HedgehogModelLayers.HEDGEHOG, HedgehogModel::createBodyLayer);
+        event.registerLayerDefinition(HedgehogModelLayers.HEDGEHOG_SCARED, HedgehogScaredModel::createBodyLayer);
+        event.registerLayerDefinition(HedgehogModelLayers.HEDGEHOG_DECOR, HedgehogModel::createBodyLayer);
     }
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(HEntities.HEDGEHOG.get(), HedgehogRenderer::new);
+        event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
     }
 
 }

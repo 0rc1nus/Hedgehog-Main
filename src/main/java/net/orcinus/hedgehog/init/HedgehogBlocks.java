@@ -13,7 +13,7 @@ import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.blocks.KiwiVinesBlock;
 
 @Mod.EventBusSubscriber(modid = Hedgehog.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class HBlocks {
+public class HedgehogBlocks {
     public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, Hedgehog.MODID);
 
     public static final RegistryObject<Block> KIWI = BLOCKS.register("kiwi_vines", () -> new KiwiVinesBlock(BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.COLOR_GREEN).strength(0.2F).sound(SoundType.CAVE_VINES).noCollission()));
