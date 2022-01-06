@@ -8,10 +8,10 @@ import net.orcinus.hedgehog.Hedgehog;
 public class HedgehogConfigHolder {
     private static final ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
     public static final ForgeConfigSpec CLIENT;
-    public static final ForgeConfigSpec.BooleanValue generateCavern;
+    public static final ForgeConfigSpec.BooleanValue makeOldHedgehog;
 
     static {
-        generateCavern = builder.define("Uses the Old Hedgehog Model", false);
+        makeOldHedgehog = builder.define("Uses the Old Hedgehog Model", false);
 
         CLIENT = builder.build();
     }

@@ -31,7 +31,7 @@ public class ClientEvents {
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 //        event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
-        if (HedgehogConfigHolder.generateCavern.get()) {
+        if (HedgehogConfigHolder.makeOldHedgehog.get()) {
             event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), OldHedgehogRenderer::new);
         } else {
             event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
