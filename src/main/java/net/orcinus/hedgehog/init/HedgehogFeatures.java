@@ -9,7 +9,6 @@ import net.minecraftforge.registries.RegistryObject;
 import net.orcinus.hedgehog.Hedgehog;
 import net.orcinus.hedgehog.world.gen.FallenBirchLogFeature;
 import net.orcinus.hedgehog.world.gen.HedgehogBirchTreeFeature;
-import net.orcinus.hedgehog.world.gen.KiwiVinesFeature;
 
 @Mod.EventBusSubscriber(modid = Hedgehog.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class HedgehogFeatures {
