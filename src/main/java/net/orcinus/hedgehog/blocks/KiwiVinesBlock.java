@@ -66,6 +66,5 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     @Override
     public void performBonemeal(ServerLevel world, Random random, BlockPos pos, BlockState state) {
         world.setBlock(pos, state.setValue(KIWI, true), 2);
-//        KiwiVinesFeature.generateVine(world, pos, random);
     }
 }
