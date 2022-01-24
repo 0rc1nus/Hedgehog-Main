@@ -37,8 +37,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
             return false;
         } else {
             List<BlockPos> vinePos = Lists.newArrayList();
-            for (int i = 0; i <= height; i++)
-            {
+            for (int i = 0; i <= height; i++) {
                 BlockPos placePos = blockPos.above(i);
                 if (world.isStateAtPosition(placePos, state -> state.is(HedgehogBlocks.KIWI.get()) || state.getMaterial().isReplaceable() || state.isAir() || state.is(Blocks.WATER) || state.getMaterial() == Material.PLANT)) {
                     world.setBlock(placePos, Blocks.BIRCH_LOG.defaultBlockState(), 2);
