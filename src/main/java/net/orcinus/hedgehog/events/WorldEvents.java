@@ -23,7 +23,8 @@ public class WorldEvents {
     public void onBiomeLoad(BiomeLoadingEvent event) {
         ResourceKey<Biome> biome = ResourceKey.create(Registry.BIOME_REGISTRY, Objects.requireNonNull(event.getName()));
         if (biome == Biomes.MEADOW) {
-            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HedgehogPlacements.KIWI_VINES);
+            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HedgehogPlacements.FALLEN_BIRCH);
+            event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HedgehogPlacements.HEDGEHOG_BIRCH_TREE);
             event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(HedgehogEntities.HEDGEHOG.get(), 12, 1, 3));
         }
     }

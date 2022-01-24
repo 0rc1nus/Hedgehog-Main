@@ -10,8 +10,6 @@ import net.orcinus.hedgehog.client.models.HedgehogScaredModel;
 import net.orcinus.hedgehog.client.models.old.OldHedgehogModel;
 import net.orcinus.hedgehog.client.models.old.OldHedgehogScaredModel;
 import net.orcinus.hedgehog.client.renderers.HedgehogRenderer;
-import net.orcinus.hedgehog.client.renderers.OldHedgehogRenderer;
-import net.orcinus.hedgehog.config.HedgehogConfigHolder;
 import net.orcinus.hedgehog.init.HedgehogEntities;
 import net.orcinus.hedgehog.init.HedgehogModelLayers;
 
@@ -30,12 +28,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
-//        event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
-        if (HedgehogConfigHolder.makeOldHedgehog.get()) {
-            event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), OldHedgehogRenderer::new);
-        } else {
-            event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
-        }
+        event.registerEntityRenderer(HedgehogEntities.HEDGEHOG.get(), HedgehogRenderer::new);
     }
 
 }

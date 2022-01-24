@@ -24,14 +24,14 @@ public class KiwiVinesFeature extends Feature<NoneFeatureConfiguration> {
         WorldGenLevel world = context.level();
         BlockPos pos = context.origin();
         Random random = context.random();
-        generateVine(world, pos, random);
+        generateVine(world, pos, random, random.nextInt(8) - random.nextInt(5) + 2);
         return true;
     }
 
-    public static void generateVine(WorldGenLevel world, BlockPos pos, Random random) {
+    public static void generateVine(WorldGenLevel world, BlockPos pos, Random random, int tries) {
         BlockPos.MutableBlockPos mut = pos.mutable();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
-            for (int i = 0; i < random.nextInt(8) - random.nextInt(5) + 2; i++) {
+            for (int i = 0; i < tries; i++) {
                 if (!world.getBlockState(mut.below()).isFaceSturdy(world, mut.below(), Direction.DOWN) || world.isEmptyBlock(mut.below())) mut.move(Direction.DOWN);
                 BlockState kiwi = HedgehogBlocks.KIWI.get().defaultBlockState().setValue(KiwiVinesBlock.getFaceProperty(Direction.DOWN), true);
                 if (random.nextInt(2) == 0 && random.nextBoolean()) kiwi = kiwi.setValue(KiwiVinesBlock.KIWI, true);

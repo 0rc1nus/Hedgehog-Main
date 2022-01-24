@@ -1,33 +1,31 @@
-modLoader="javafml" #mandatory
-# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
-loaderVersion="[39,)" #mandatory This is typically bumped every Minecraft version by Forge. See our download page for lists of versions.
-# The license for you mod. This is mandatory metadata and allows for easier comprehension of your redistributive properties.
-# Review your options at https://choosealicense.com/. All rights reserved is the default copyright stance, and is thus the default here.
+modLoader="javafml"
+loaderVersion="[39,)"
 license="All Rights Reserved"
-[[mods]] #mandatory
-modId="hedgehog" #mandatory
-version="${file.jarVersion}" #mandatory
-displayName="Orcinus" #mandatory
+[[mods]]
+modId="hedgehog"
+version="${file.jarVersion}"
+displayName="Hedgehog"
+displayURL = "https://discord.gg/5wp2d6xeFW"
+authors = "Orcinus"
+logoFile="hedgehog_logo.png"
 description='''
 This mod adds hedgehog to the base game
+
+Special Thanks:
+
+- Ninni (Visual Artist)
+- Wolf (Logo Artist)
+
 '''
-# A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
-[[dependencies.hedgehog]] #optional
-   # the modid of the dependency
-   modId="forge" #mandatory
-   # Does this dependency have to exist - if not, ordering below must be specified
-   mandatory=true #mandatory
-   # The version range of the dependency
-   versionRange="[39,)" #mandatory
-   # An ordering relationship for the dependency - BEFORE or AFTER required if the relationship is not mandatory
+[[dependencies.hedgehog]]
+   modId="forge"
+   mandatory=true
+   versionRange="[39,)"
    ordering="NONE"
-   # Side this dependency is applied on - BOTH, CLIENT or SERVER
    side="BOTH"
-# Here's another dependency
 [[dependencies.hedgehog]]
    modId="minecraft"
    mandatory=true
-   # This version range declares a minimum of the current minecraft version up to but not including the next major version
    versionRange="[1.18.1,1.19)"
    ordering="NONE"
    side="BOTH"

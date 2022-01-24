@@ -10,7 +10,8 @@ import net.orcinus.hedgehog.Hedgehog;
 
 public class HedgehogConfiguredFeatures {
 
-    public static final ConfiguredFeature<?, ?> KIWI_VINES = registerConfiguredFeature("kiwi_vines", HedgehogFeatures.KIWI_VINES.get().configured(FeatureConfiguration.NONE));
+    public static final ConfiguredFeature<?, ?> FALLEN_BIRCH = registerConfiguredFeature("fallen_birch", HedgehogFeatures.FALLEN_BIRCH.get().configured(FeatureConfiguration.NONE));
+    public static final ConfiguredFeature<?, ?> HEDGEHOG_BIRCH_TREE = registerConfiguredFeature("hedgehog_birch_tree", HedgehogFeatures.HEDGEHOG_BIRCH_TREE.get().configured(FeatureConfiguration.NONE));
 
     public static <FC extends FeatureConfiguration, F extends Feature<FC>, CF extends ConfiguredFeature<FC, F>> CF registerConfiguredFeature(String name, CF configuredFeature) {
         ResourceLocation ID = new ResourceLocation(Hedgehog.MODID, name);
