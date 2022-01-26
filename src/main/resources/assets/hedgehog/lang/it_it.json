@@ -1,0 +1,13 @@
+{
+  "block.hedgehog.kiwi_vines": "Viti di kiwi",
+  "item.hedgehog.kiwi": "Kiwi",
+  "item.hedgehog.hedgehog_spawn_egg": "Uovo generatore di riccio",
+  "subtitles.entity.hedgehog.hedgehog.ambient": "Riccio annusa",
+  "subtitles.entity.hedgehog.hedgehog.scared": "Riccio sibila",
+  "subtitles.entity.hedgehog.hedgehog.eating": "Riccio mastica",
+  "subtitles.entity.hedgehog.hedgehog.hurt": "Riccio ferito",
+  "subtitles.entity.hedgehog.hedgehog.death": "Riccio muore",
+  "death.attack.mob.hedgehog:hedgehog": "%1$s è stato/a punto/a a morte da %2$s",
+  "death.attack.mob.hedgehog:hedgehog.item": "%1$s è stato ucciso/a da %2$s mentre brandiva %3$s",
+  "entity.hedgehog.hedgehog": "Riccio"
+}
