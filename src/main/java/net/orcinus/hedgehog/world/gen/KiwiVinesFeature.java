@@ -3,6 +3,7 @@ package net.orcinus.hedgehog.world.gen;
 import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -28,7 +29,7 @@ public class KiwiVinesFeature extends Feature<NoneFeatureConfiguration> {
         return true;
     }
 
-    public static void generateVine(WorldGenLevel world, BlockPos pos, Random random, int tries) {
+    public static void generateVine(LevelAccessor world, BlockPos pos, Random random, int tries) {
         BlockPos.MutableBlockPos mut = pos.mutable();
         for (Direction direction : Direction.Plane.HORIZONTAL) {
             for (int i = 0; i < tries; i++) {
