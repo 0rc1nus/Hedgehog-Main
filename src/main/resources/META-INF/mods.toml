@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All Rights Reserved"
 [[mods]]
 modId="hedgehog"
-version="1.1.1"
+version="1.1.2"
 displayName="Hedgehog"
 displayURL = "https://discord.gg/5wp2d6xeFW"
 authors = "Orcinus"
@@ -16,7 +16,7 @@ Special Thanks:
 - Ninni (Visual Artist)
 - Wolf (Logo Artist)
 
-To the very special person
+To the very special group of people
 I miss you
 '''
 [[dependencies.hedgehog]]
