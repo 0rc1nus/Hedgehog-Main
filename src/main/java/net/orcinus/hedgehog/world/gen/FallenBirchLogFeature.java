@@ -17,7 +17,9 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.orcinus.hedgehog.blocks.KiwiVinesBlock;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
+import org.apache.commons.compress.utils.Lists;
 
+import java.util.List;
 import java.util.Random;
 
 public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
@@ -37,20 +39,24 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
         if (!world.getBlockState(blockPos.below()).is(BlockTags.DIRT)) {
             return false;
         } else {
+            List<BlockPos> placePos = Lists.newArrayList();
             BlockPos.MutableBlockPos mut = blockPos.mutable();
             for (int i = 0; i <= logLength; i++) {
                 if (world.getBlockState(mut.below()).getMaterial().isReplaceable() || world.isStateAtPosition(mut.below(), DripstoneUtils::isEmptyOrWater)) {
                     mut.move(Direction.DOWN);
                     if (world.getBlockState(mut).getMaterial().isReplaceable() || world.isStateAtPosition(mut, DripstoneUtils::isEmptyOrWater)) {
                         world.setBlock(mut, Blocks.BIRCH_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction.getAxis()), 2);
-                        generateVines(world, random, kiwi, mut.immutable());
+                        placePos.add(mut.immutable());
                     }
                 }
                 if (world.getBlockState(mut).getMaterial().isReplaceable() || world.isStateAtPosition(mut, DripstoneUtils::isEmptyOrWater)) {
                     world.setBlock(mut, Blocks.BIRCH_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction.getAxis()), 2);
-                    generateVines(world, random, kiwi, mut.immutable());
+                    placePos.add(mut.immutable());
                 }
                 mut.move(direction);
+            }
+            for (BlockPos vinePos : placePos) {
+                generateVines(world, random, kiwi, vinePos);
             }
             return true;
         }

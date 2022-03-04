@@ -16,7 +16,9 @@ import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConf
 import net.minecraft.world.level.material.Material;
 import net.orcinus.hedgehog.blocks.KiwiVinesBlock;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
+import org.apache.commons.compress.utils.Lists;
 
+import java.util.List;
 import java.util.Random;
 
 public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> {
@@ -34,11 +36,12 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
         if (!world.getBlockState(blockPos.below()).is(BlockTags.DIRT)) {
             return false;
         } else {
+            List<BlockPos> vinePlacePos = Lists.newArrayList();
             for (int i = 0; i <= height; i++) {
                 BlockPos placePos = blockPos.above(i);
                 if (world.isStateAtPosition(placePos, state -> state.is(HedgehogBlocks.KIWI.get()) || state.getMaterial().isReplaceable() || state.isAir() || state.is(Blocks.WATER) || state.getMaterial() == Material.PLANT)) {
                     world.setBlock(placePos, Blocks.BIRCH_LOG.defaultBlockState(), 19);
-                    this.generateVines(world, random, placePos);
+                    vinePlacePos.add(placePos);
                 }
             }
             int radius = 1;
@@ -54,6 +57,9 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
                         }
                     }
                 }
+            }
+            for (BlockPos vinePos : vinePlacePos) {
+                this.generateVines(world, random, vinePos);
             }
             return true;
         }

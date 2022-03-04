@@ -18,7 +18,6 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.orcinus.hedgehog.init.HedgehogItems;
-import net.orcinus.hedgehog.world.gen.KiwiVinesFeature;
 
 import java.util.Random;
 
@@ -28,6 +27,11 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     public KiwiVinesBlock(Properties properties) {
         super(properties);
         this.registerDefaultState(this.defaultBlockState().setValue(KIWI, false));
+    }
+
+    @Override
+    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
+        this.performBonemeal(world, random, blockPos, state);
     }
 
     @Override

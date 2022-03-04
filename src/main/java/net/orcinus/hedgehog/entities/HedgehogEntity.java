@@ -355,7 +355,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
             }
         }
         for (LivingEntity nearbyMobs : closestLivings) {
-            if (nearbyMobs.isAlive() && this.getScaredTicks() > 0) {
+            if (this.isAlive() && nearbyMobs.isAlive() && this.getScaredTicks() > 0) {
                 if (!(nearbyMobs instanceof HedgehogEntity)) {
                     if (nearbyMobs instanceof TamableAnimal) {
                         if (((TamableAnimal) nearbyMobs).isTame()) continue;
