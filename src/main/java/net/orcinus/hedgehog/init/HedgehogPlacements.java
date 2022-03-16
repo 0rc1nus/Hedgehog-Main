@@ -28,4 +28,7 @@ public class HedgehogPlacements {
         return registerPlacedFeature(string, holder, List.of(placementModifiers));
     }
 
+    public static void init() {
+    }
+
 }

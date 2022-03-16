@@ -31,6 +31,7 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
+        if (!world.isAreaLoaded(blockPos, 1)) return;
         this.performBonemeal(world, random, blockPos, state);
     }
 
