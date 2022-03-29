@@ -25,7 +25,7 @@ public class WorldEvents {
         if (biome == Biomes.MEADOW) {
             event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HedgehogPlacements.FALLEN_BIRCH);
             event.getGeneration().addFeature(GenerationStep.Decoration.VEGETAL_DECORATION, HedgehogPlacements.HEDGEHOG_BIRCH_TREE);
-            event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(HedgehogEntities.HEDGEHOG.get(), 12, 1, 3));
+            event.getSpawns().addSpawn(MobCategory.CREATURE, new MobSpawnSettings.SpawnerData(HedgehogEntities.HEDGEHOG.get(), 40, 3, 6));
         }
     }
 
