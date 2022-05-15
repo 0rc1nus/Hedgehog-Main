@@ -17,5 +17,6 @@ public class HedgehogItems {
 
     public static final RegistryObject<Item> HEDGEHOG_SPAWN_EGG = ITEMS.register("hedgehog_spawn_egg", () -> new ForgeSpawnEggItem(HedgehogEntities.HEDGEHOG, 5654847, 13352614, new Item.Properties().tab(CreativeModeTab.TAB_MISC)));
     public static final RegistryObject<Item> KIWI = ITEMS.register("kiwi", () -> new ItemNameBlockItem(HedgehogBlocks.KIWI.get(), (new Item.Properties()).food(HedgehogFoodProperties.KIWI).tab(CreativeModeTab.TAB_FOOD)));
+    public static final RegistryObject<Item> GOLDEN_KIWI = ITEMS.register("golden_kiwi", () -> new Item(new Item.Properties().tab(CreativeModeTab.TAB_FOOD)));
 
 }
