@@ -3,7 +3,7 @@
     {
       "when": {
         "up": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines",
@@ -29,7 +29,7 @@
     {
       "when": {
         "up": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom",
@@ -58,7 +58,7 @@
     {
       "when": {
         "north": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines"
@@ -80,7 +80,7 @@
     {
       "when": {
         "north": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom"
@@ -105,7 +105,7 @@
     {
       "when": {
         "west": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines",
@@ -131,7 +131,7 @@
     {
       "when": {
         "west": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom",
@@ -160,7 +160,7 @@
     {
       "when": {
         "south": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines",
@@ -186,7 +186,7 @@
     {
       "when": {
         "south": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom",
@@ -215,7 +215,7 @@
     {
       "when": {
         "east": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines",
@@ -241,7 +241,7 @@
     {
       "when": {
         "east": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom",
@@ -270,7 +270,7 @@
     {
       "when": {
         "down": "true",
-        "kiwi": "false"
+        "berries": "false"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines",
@@ -296,7 +296,7 @@
     {
       "when": {
         "down": "true",
-        "kiwi": "true"
+        "berries": "true"
       },
       "apply": {
         "model": "hedgehog:block/kiwi_vines_bloom",

@@ -15,6 +15,7 @@ import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.orcinus.hedgehog.init.HedgehogItems;
@@ -22,7 +23,7 @@ import net.orcinus.hedgehog.init.HedgehogItems;
 import java.util.Random;
 
 public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock {
-    public static final BooleanProperty KIWI = BooleanProperty.create("kiwi");
+    public static final BooleanProperty KIWI = BlockStateProperties.BERRIES;
 
     public KiwiVinesBlock(Properties properties) {
         super(properties);
@@ -32,7 +33,9 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
         if (!world.isAreaLoaded(blockPos, 1)) return;
-        this.performBonemeal(world, random, blockPos, state);
+        if (random.nextFloat() < 0.4F) {
+            this.performBonemeal(world, random, blockPos, state);
+        }
     }
 
     @Override

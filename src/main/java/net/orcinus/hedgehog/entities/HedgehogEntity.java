@@ -148,6 +148,12 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     }
 
     @Override
+    public void travel(Vec3 velocity) {
+        if (this.getScaredTicks() > 0) return;
+        super.travel(velocity);
+    }
+
+    @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(BAND_COLOR, -1);
