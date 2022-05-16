@@ -1,8 +1,11 @@
 package net.orcinus.hedgehog.events;
 
+import net.minecraft.world.entity.SpawnPlacements;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Fox;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -19,6 +22,7 @@ public class MobEvents {
 
     @SubscribeEvent
     public static void registerEntityAttributes(EntityAttributeCreationEvent event) {
+        SpawnPlacements.register(HedgehogEntities.HEDGEHOG.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, Animal::checkAnimalSpawnRules);
         event.put(HedgehogEntities.HEDGEHOG.get(), HedgehogEntity.createAttributes().build());
     }
 

@@ -8,6 +8,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.orcinus.hedgehog.events.MiscEvents;
 import net.orcinus.hedgehog.events.MobEvents;
 import net.orcinus.hedgehog.events.WorldEvents;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
@@ -17,7 +18,6 @@ import net.orcinus.hedgehog.init.HedgehogFeatures;
 import net.orcinus.hedgehog.init.HedgehogItems;
 import net.orcinus.hedgehog.init.HedgehogPlacements;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
-import net.orcinus.hedgehog.init.HedgehogSpawnPlacements;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -39,6 +39,7 @@ public class Hedgehog {
 
         MinecraftForge.EVENT_BUS.register(new MobEvents());
         MinecraftForge.EVENT_BUS.register(new WorldEvents());
+        MinecraftForge.EVENT_BUS.register(new MiscEvents());
 
         MinecraftForge.EVENT_BUS.register(this);
 
@@ -49,7 +50,6 @@ public class Hedgehog {
             HedgehogConfiguredFeatures.init();
             HedgehogPlacements.init();
         });
-        HedgehogSpawnPlacements.register();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
