@@ -1,0 +1,5 @@
+{
+  "type": "hedgehog:hedgehog_provider",
+  "biomes": "#minecraft:is_forest",
+  "feature": "hedgehog:fallen_birch"
+}

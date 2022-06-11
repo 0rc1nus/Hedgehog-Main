@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
@@ -32,7 +33,7 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
         BlockPos blockPos = context.origin();
-        Random random = context.random();
+        RandomSource random = context.random();
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         int logLength = Mth.nextInt(random, 3, 6);
         BlockState kiwi = random.nextBoolean() ? HedgehogBlocks.KIWI.get().defaultBlockState() : HedgehogBlocks.KIWI.get().defaultBlockState().setValue(KiwiVinesBlock.KIWI, true);
@@ -59,7 +60,7 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
         }
     }
 
-    private void generateVines(LevelAccessor world, Random random, BlockState kiwi, BlockPos pos) {
+    private void generateVines(LevelAccessor world, RandomSource random, BlockState kiwi, BlockPos pos) {
         for (Direction facingDirection : Direction.values()) {
             BlockPos relative = pos.relative(facingDirection);
             if (world.isStateAtPosition(relative, BlockBehaviour.BlockStateBase::isAir)) {

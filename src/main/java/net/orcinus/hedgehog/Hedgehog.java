@@ -10,7 +10,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.orcinus.hedgehog.events.MiscEvents;
 import net.orcinus.hedgehog.events.MobEvents;
-import net.orcinus.hedgehog.events.WorldEvents;
+import net.orcinus.hedgehog.init.HedgehogBiomeModifiers;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
 import net.orcinus.hedgehog.init.HedgehogConfiguredFeatures;
 import net.orcinus.hedgehog.init.HedgehogEntities;
@@ -18,6 +18,7 @@ import net.orcinus.hedgehog.init.HedgehogFeatures;
 import net.orcinus.hedgehog.init.HedgehogItems;
 import net.orcinus.hedgehog.init.HedgehogPlacements;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
+import net.orcinus.hedgehog.world.HedgehogBiomeModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,13 +33,13 @@ public class Hedgehog {
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::clientSetup);
         HedgehogBlocks.BLOCKS.register(modEventBus);
+        HedgehogBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
         HedgehogItems.ITEMS.register(modEventBus);
         HedgehogEntities.ENTITY_TYPES.register(modEventBus);
         HedgehogSoundEvents.SOUNDEVENTS.register(modEventBus);
         HedgehogFeatures.FEATURES.register(modEventBus);
 
         MinecraftForge.EVENT_BUS.register(new MobEvents());
-        MinecraftForge.EVENT_BUS.register(new WorldEvents());
         MinecraftForge.EVENT_BUS.register(new MiscEvents());
 
         MinecraftForge.EVENT_BUS.register(this);

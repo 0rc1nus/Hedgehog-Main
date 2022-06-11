@@ -1,9 +1,11 @@
 package net.orcinus.hedgehog.entities.ai.hedgehog;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -59,11 +61,11 @@ public class HedgehogEatSpiderEyeGoal extends Goal {
                 if (this.eatingTicks > 0) {
                     this.eatingTicks--;
                     if (!world.isClientSide()) {
-                        world.gameEvent(GameEvent.EAT, this.hedgehog.eyeBlockPosition());
+                        this.hedgehog.gameEvent(GameEvent.EAT);
                     }
                     if (this.eatingTicks % 5 == 0) {
                         this.hedgehog.getLookControl().setLookAt(item);
-                        Random random = this.hedgehog.getRandom();
+                        RandomSource random = this.hedgehog.getRandom();
                         this.hedgehog.playSound(SoundEvents.GENERIC_EAT, 0.5F + 0.5F * (float) random.nextInt(2), (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
                         for(int i = 0; i < UniformInt.of(12, 20).sample(random); i++) {
                             Vec3 vec3 = new Vec3(((double) random.nextFloat() - 0.5D) * 0.1D, Math.random() * 0.1D + 0.1D, ((double) random.nextFloat() - 0.5D) * 0.1D);

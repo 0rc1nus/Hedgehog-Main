@@ -2,6 +2,7 @@ package net.orcinus.hedgehog.entities;
 
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Registry;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
@@ -35,9 +36,11 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.control.LookControl;
 import net.minecraft.world.entity.ai.control.MoveControl;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
+import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.SitWhenOrderedToGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -479,7 +482,7 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
                     }
 
                     this.heal((float)item.getFoodProperties().getNutrition());
-                    this.gameEvent(GameEvent.MOB_INTERACT, this.eyeBlockPosition());
+                    this.gameEvent(GameEvent.ENTITY_INTERACT, player);
                     return InteractionResult.SUCCESS;
                 }
                 for (DyeColor dyeColor : ITEM_BY_DYE.keySet()) {
@@ -560,7 +563,8 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
         if (id == 9) {
             if (random.nextInt(15) == 0) {
                 for (int k = 0; k < UniformInt.of(1, 2).sample(this.getRandom()); k++) {
-                    this.level.addParticle(ParticleTypes.SNOWFLAKE, this.eyeBlockPosition().getX() + 0.5D, (this.eyeBlockPosition().getY()) + 0.8D, this.eyeBlockPosition().getZ() + 0.5D, (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F), 0.05F, (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F));
+                    BlockPos eyeBlockPosition = new BlockPos(this.getEyePosition(1.0F));
+                    this.level.addParticle(ParticleTypes.SNOWFLAKE, eyeBlockPosition.getX() + 0.5D, (eyeBlockPosition.getY()) + 0.8D, eyeBlockPosition.getZ() + 0.5D, (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F), 0.05F, (Mth.randomBetween(random, -1.0F, 1.0F) * 0.083333336F));
                 }
             }
         }

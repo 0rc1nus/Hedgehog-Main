@@ -4,6 +4,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -13,6 +14,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
+import net.minecraft.world.level.block.MultifaceSpreader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -20,10 +22,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.orcinus.hedgehog.init.HedgehogItems;
 
-import java.util.Random;
-
 public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock {
     public static final BooleanProperty KIWI = BlockStateProperties.BERRIES;
+    private final MultifaceSpreader spreader = new MultifaceSpreader(this);
 
     public KiwiVinesBlock(Properties properties) {
         super(properties);
@@ -31,7 +32,7 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     }
 
     @Override
-    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, Random random) {
+    public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
         if (!world.isAreaLoaded(blockPos, 1)) return;
         if (random.nextFloat() < 0.4F) {
             this.performBonemeal(world, random, blockPos, state);
@@ -42,6 +43,11 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(KIWI);
+    }
+
+    @Override
+    public MultifaceSpreader getSpreader() {
+        return this.spreader;
     }
 
     @Override
@@ -67,12 +73,12 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     }
 
     @Override
-    public boolean isBonemealSuccess(Level world, Random random, BlockPos pos, BlockState state) {
+    public boolean isBonemealSuccess(Level world, RandomSource random, BlockPos pos, BlockState state) {
         return true;
     }
 
     @Override
-    public void performBonemeal(ServerLevel world, Random random, BlockPos pos, BlockState state) {
+    public void performBonemeal(ServerLevel world, RandomSource random, BlockPos pos, BlockState state) {
         world.setBlock(pos, state.setValue(KIWI, true), 2);
     }
 }

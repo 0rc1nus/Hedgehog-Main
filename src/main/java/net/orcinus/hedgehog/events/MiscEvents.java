@@ -1,6 +1,7 @@
 package net.orcinus.hedgehog.events;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
@@ -23,7 +24,7 @@ public class MiscEvents {
         BlockPos blockPos = event.getPos();
         LevelAccessor world = event.getWorld();
         BlockState state = world.getBlockState(blockPos);
-        Random random = event.getRand();
+        RandomSource random = event.getRand();
         if (world.getBiome(blockPos).is(Biomes.MEADOW)){
             if (state.getBlock() == Blocks.BIRCH_SAPLING) {
                 event.setResult(Event.Result.DENY);

@@ -11,7 +11,7 @@ buildscript {
 apply plugin: 'net.minecraftforge.gradle'
 
 group = 'net'
-version = '1.18.2-1.1.0'
+version = '1.19-1.0.0'
 
 java {
     archivesBaseName = 'hedgehog'
@@ -19,7 +19,7 @@ java {
 }
 
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: '1.19'
 
      accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
@@ -77,7 +77,7 @@ repositories {
 
 dependencies {
 
-    minecraft 'net.minecraftforge:forge:1.18.2-40.0.3'
+    minecraft 'net.minecraftforge:forge:1.19-41.0.1'
 
 }
 

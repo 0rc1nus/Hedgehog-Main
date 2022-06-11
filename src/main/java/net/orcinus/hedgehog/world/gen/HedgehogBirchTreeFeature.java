@@ -4,6 +4,7 @@ import com.mojang.serialization.Codec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.RandomSource;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
@@ -31,7 +32,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
     public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
         WorldGenLevel world = context.level();
         BlockPos blockPos = context.origin();
-        Random random = context.random();
+        RandomSource random = context.random();
         int height = ConstantInt.of(9).sample(random);
         if (!world.getBlockState(blockPos.below()).is(BlockTags.DIRT)) {
             return false;
@@ -41,7 +42,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
         }
     }
 
-    public static void generateTree(LevelAccessor world, BlockPos blockPos, Random random, int height, boolean shouldGenerateKiwis) {
+    public static void generateTree(LevelAccessor world, BlockPos blockPos, RandomSource random, int height, boolean shouldGenerateKiwis) {
         for (int i = 0; i <= height; i++) {
             BlockPos placePos = blockPos.above(i);
             if (world.isStateAtPosition(placePos, state -> state.is(HedgehogBlocks.KIWI.get()) || state.getMaterial().isReplaceable() || state.isAir() || state.is(Blocks.WATER) || state.getMaterial() == Material.PLANT)) {
@@ -67,7 +68,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
         }
     }
 
-    private static void generateVines(LevelAccessor world, Random random, BlockPos pos) {
+    private static void generateVines(LevelAccessor world, RandomSource random, BlockPos pos) {
         BlockPos.MutableBlockPos mut = pos.mutable();
         if (random.nextInt(3) == 0) {
             KiwiVinesFeature.generateVine(world, pos, random, 2);

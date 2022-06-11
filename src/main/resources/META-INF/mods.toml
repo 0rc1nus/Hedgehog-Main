@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All Rights Reserved"
 [[mods]]
 modId="hedgehog"
-version="1.18.2-1.1.0"
+version="1.19-1.0.0"
 displayName="Hedgehog"
 displayURL = "https://discord.gg/5wp2d6xeFW"
 authors = "Orcinus"
@@ -28,6 +28,6 @@ I miss you
 [[dependencies.hedgehog]]
    modId="minecraft"
    mandatory=true
-   versionRange="[1.18.1,1.19)"
+   versionRange="[1.19]"
    ordering="NONE"
    side="BOTH"
