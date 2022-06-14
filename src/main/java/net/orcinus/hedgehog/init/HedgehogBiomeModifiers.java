@@ -1,9 +1,6 @@
 package net.orcinus.hedgehog.init;
 
 import com.mojang.serialization.Codec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import net.minecraft.world.level.biome.Biome;
-import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
@@ -15,11 +12,9 @@ import net.orcinus.hedgehog.world.HedgehogBiomeModifier;
 @Mod.EventBusSubscriber(modid = Hedgehog.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class HedgehogBiomeModifiers {
 
-    public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Hedgehog.MODID);
+    public static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, Hedgehog.MODID);
 
-    public static final RegistryObject<Codec<HedgehogBiomeModifier>> HEDGEHOG_CODEC = BIOME_MODIFIER_SERIALIZERS.register("hedgehog_provider", () -> RecordCodecBuilder.create(builder -> builder.group(
-            Biome.LIST_CODEC.fieldOf("biomes").forGetter(HedgehogBiomeModifier::biomes),
-            PlacedFeature.CODEC.fieldOf("feature").forGetter(HedgehogBiomeModifier::feature)
-    ).apply(builder, HedgehogBiomeModifier::new)));
+    public static final RegistryObject<Codec<? extends BiomeModifier>> HEDGEHOG_BIOME_MODIFIER = BIOME_MODIFIERS.register("hedgehog_biome_modifier", () -> Codec.unit(HedgehogBiomeModifier::new));
+
 
 }

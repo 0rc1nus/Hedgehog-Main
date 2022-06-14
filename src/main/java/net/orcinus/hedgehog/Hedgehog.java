@@ -18,7 +18,6 @@ import net.orcinus.hedgehog.init.HedgehogFeatures;
 import net.orcinus.hedgehog.init.HedgehogItems;
 import net.orcinus.hedgehog.init.HedgehogPlacements;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
-import net.orcinus.hedgehog.world.HedgehogBiomeModifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -33,7 +32,7 @@ public class Hedgehog {
         modEventBus.addListener(this::setup);
         modEventBus.addListener(this::clientSetup);
         HedgehogBlocks.BLOCKS.register(modEventBus);
-        HedgehogBiomeModifiers.BIOME_MODIFIER_SERIALIZERS.register(modEventBus);
+        HedgehogBiomeModifiers.BIOME_MODIFIERS.register(modEventBus);
         HedgehogItems.ITEMS.register(modEventBus);
         HedgehogEntities.ENTITY_TYPES.register(modEventBus);
         HedgehogSoundEvents.SOUNDEVENTS.register(modEventBus);

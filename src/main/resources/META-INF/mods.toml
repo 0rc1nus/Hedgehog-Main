@@ -22,7 +22,7 @@ I miss you
 [[dependencies.hedgehog]]
    modId="forge"
    mandatory=true
-   versionRange="[39,)"
+   versionRange="[41.0.22,)"
    ordering="NONE"
    side="BOTH"
 [[dependencies.hedgehog]]
