@@ -344,17 +344,12 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
     }
 
     @Override
-    public void tick() {
-        super.tick();
-    }
-
-    @Override
     public void aiStep() {
         super.aiStep();
         List<Fox> foxes = this.level.getEntitiesOfClass(Fox.class, this.getBoundingBox().inflate(3.0D));
         List<LivingEntity> closestLivings = this.level.getEntitiesOfClass(LivingEntity.class, this.getBoundingBox().inflate(0.6D), (entity -> {
-            if (entity instanceof Player) {
-                return !((Player) entity).getAbilities().instabuild;
+            if (entity instanceof Player player) {
+                return !player.getAbilities().instabuild;
             }
             return !entity.isSpectator();
         }));
