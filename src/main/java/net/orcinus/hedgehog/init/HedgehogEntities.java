@@ -11,7 +11,7 @@ import net.orcinus.hedgehog.entities.HedgehogEntity;
 
 public class HedgehogEntities {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITIES, Hedgehog.MODID);
+    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, Hedgehog.MODID);
 
     public static final RegistryObject<EntityType<HedgehogEntity>> HEDGEHOG = ENTITY_TYPES.register("hedgehog", () -> EntityType.Builder.of(HedgehogEntity::new, MobCategory.CREATURE).sized(0.7F, 0.6F).clientTrackingRange(10).build(new ResourceLocation(Hedgehog.MODID, "hedgehog").toString()));
 

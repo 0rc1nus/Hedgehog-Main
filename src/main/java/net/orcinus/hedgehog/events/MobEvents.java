@@ -8,7 +8,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.BasicItemListing;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.village.WandererTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -34,7 +34,7 @@ public class MobEvents {
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorldEvent(EntityJoinWorldEvent event) {
+    public void onEntityJoinWorldEvent(EntityJoinLevelEvent event) {
         if (event.getEntity() instanceof Fox) {
             ((Fox)event.getEntity()).goalSelector.addGoal(2, new NearestAttackableTargetGoal<>((Fox)event.getEntity(), HedgehogEntity.class, true, (entity -> !entity.isBaby())) {
                 @Override

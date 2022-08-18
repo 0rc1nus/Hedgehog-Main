@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.orcinus.hedgehog.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "refmap": "hedgehog.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

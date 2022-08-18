@@ -1,27 +1,39 @@
 buildscript {
     repositories {
         maven { url = 'https://maven.minecraftforge.net' }
+        maven { url = "https://files.minecraftforge.net/maven" }
+        maven { url = "https://repo.spongepowered.org/repository/maven-public/" }
+        maven { url = 'https://maven.parchmentmc.org' }
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: "${project.forgegradle_version}", changing: true
+        classpath 'org.parchmentmc:librarian:1.+'
+        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7-SNAPSHOT"
     }
 }
 
 apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'eclipse'
+apply plugin: 'maven-publish'
+apply plugin: "org.spongepowered.mixin"
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
 
-group = 'net'
-version = '1.19-1.0.0'
-
-java {
-    archivesBaseName = 'hedgehog'
-    toolchain.languageVersion = JavaLanguageVersion.of(17)
+mixin {
+    add sourceSets.main, "hedgehog.refmap.json"
 }
 
-minecraft {
-    mappings channel: 'official', version: '1.19'
+version = "${project.minecraft_version}-${project.mod_version}"
+group = 'net.orcinus.hedgehog'
+archivesBaseName = 'Hedgehog'
 
-     accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
+minecraft {
+    mappings channel: "${project.mappings_channel}", version: "${project.mappings_version}"
+
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
 
     runs {
         client {
@@ -30,7 +42,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
-
+            arg "-mixin.config=hedgehog.mixins.json"
             mods {
                 hedgehog {
                     source sourceSets.main
@@ -44,6 +56,7 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
+            arg "-mixin.config=hedgehog.mixins.json"
 
             mods {
                 hedgehog {
@@ -58,6 +71,8 @@ minecraft {
             property 'forge.logging.markers', 'REGISTRIES'
 
             property 'forge.logging.console.level', 'debug'
+            property "mixin.env.remapRefMap", "true"
+            property "mixin.env.refMapRemappingFile", "${projectDir}/build/createSrgToMcp/output.srg"
 
             args '--mod', 'hedgehog', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
@@ -73,26 +88,43 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
+    maven {
+        url "https://www.cursemaven.com"
+    }
 }
 
 dependencies {
-
-    minecraft 'net.minecraftforge:forge:1.19-41.0.22'
-
+    minecraft "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
+    annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
 }
 
 jar {
     manifest {
         attributes([
                 "Specification-Title"     : "Hedgehog",
-                "Specification-Vendor": "Orcinus, Ninni",
+                "Specification-Vendor"    : "Orcinus",
                 "Specification-Version"   : "1",
-                "Implementation-Title"    : project.name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor": "Orcinus",
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                "Implementation-Title"    : "Hedgehog",
+                "Implementation-Version"  : "1.0.0",
+                "Implementation-Vendor"   : "Orcinus",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : "hedgehog.mixins.json"
         ])
     }
+    finalizedBy 'reobfJar'
 }
 
 jar.finalizedBy('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {
+            url "https://maven.minecraftforge.net"
+        }
+    }
+}

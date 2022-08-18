@@ -7,7 +7,7 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.world.SaplingGrowTreeEvent;
+import net.minecraftforge.event.level.SaplingGrowTreeEvent;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -22,9 +22,9 @@ public class MiscEvents {
     @SubscribeEvent
     public void onSaplingGrow(SaplingGrowTreeEvent event) {
         BlockPos blockPos = event.getPos();
-        LevelAccessor world = event.getWorld();
+        LevelAccessor world = event.getLevel();
         BlockState state = world.getBlockState(blockPos);
-        RandomSource random = event.getRand();
+        RandomSource random = event.getRandomSource();
         if (world.getBiome(blockPos).is(Biomes.MEADOW)){
             if (state.getBlock() == Blocks.BIRCH_SAPLING) {
                 event.setResult(Event.Result.DENY);

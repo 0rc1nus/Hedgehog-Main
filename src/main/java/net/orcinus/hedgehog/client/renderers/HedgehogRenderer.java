@@ -16,15 +16,14 @@ import net.orcinus.hedgehog.client.models.HedgehogScaredModel;
 import net.orcinus.hedgehog.client.renderers.layers.HedgehogClothLayer;
 import net.orcinus.hedgehog.entities.HedgehogEntity;
 import net.orcinus.hedgehog.init.HedgehogModelLayers;
+import net.orcinus.hedgehog.util.PatreonSkinHandler;
+
+import java.util.Map;
 
 @OnlyIn(Dist.CLIENT)
 public class HedgehogRenderer extends MobRenderer<HedgehogEntity, EntityModel<HedgehogEntity>> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(Hedgehog.MODID, "textures/entity/hedgehog.png");
     public static final ResourceLocation SCARED_TEXTURE = new ResourceLocation(Hedgehog.MODID, "textures/entity/scared_hedgehog.png");
-    public static final ResourceLocation SPEED_CONSUMER = new ResourceLocation(Hedgehog.MODID, "textures/entity/speed_consumer_hedgehog.png");
-    public static final ResourceLocation SCARED_SPEED_CONSUMER = new ResourceLocation(Hedgehog.MODID, "textures/entity/scared_speed_consumer_hedgehog.png");
-    public static final ResourceLocation ZEFIRO = new ResourceLocation(Hedgehog.MODID, "textures/entity/zefiro_hedgehog.png");
-    public static final ResourceLocation SCARED_ZEFIRO = new ResourceLocation(Hedgehog.MODID, "textures/entity/scared_zefiro_hedgehog.png");
     private final EntityModel<HedgehogEntity> scared;
     private final EntityModel<HedgehogEntity> normal = this.getModel();
 
@@ -60,13 +59,9 @@ public class HedgehogRenderer extends MobRenderer<HedgehogEntity, EntityModel<He
     @Override
     public ResourceLocation getTextureLocation(HedgehogEntity entity) {
         String s = ChatFormatting.stripFormatting(entity.getName().getString());
-        if ("SpeedBoy".equals(s)) {
-            return entity.getScaredTicks() > 0 ? SCARED_SPEED_CONSUMER : SPEED_CONSUMER;
-        }
-        else if ("Zefiro".equals(s)) {
-            return entity.getScaredTicks() > 0 ? SCARED_ZEFIRO : ZEFIRO;
-        }
-        else {
+        if (PatreonSkinHandler.matchesString(s)) {
+            return entity.getScaredTicks() > 0 ? PatreonSkinHandler.getScaredTexture(s) : PatreonSkinHandler.getTexture(s);
+        } else {
             return entity.getScaredTicks() > 0 ? SCARED_TEXTURE : TEXTURE;
         }
     }
