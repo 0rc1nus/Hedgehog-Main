@@ -9,6 +9,7 @@ import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -59,7 +60,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
                     BlockPos leavePos = new BlockPos(blockPos.getX() + x, blockPos.getY() + y + height, blockPos.getZ() + z);
                     if (0.4 * (x * x) + ((y * y) / 16.0) + 0.4 * (z * z) <= radius * radius) {
                         if (world.isStateAtPosition(leavePos, state -> state.isAir() || state.is(Blocks.WATER) || state.is(HedgehogBlocks.KIWI.get()))) {
-                            BlockState state = Blocks.BIRCH_LEAVES.defaultBlockState();
+                            BlockState state = Blocks.BIRCH_LEAVES.defaultBlockState().setValue(LeavesBlock.DISTANCE, 1);
                             world.setBlock(leavePos, state, 19);
                         }
                     }

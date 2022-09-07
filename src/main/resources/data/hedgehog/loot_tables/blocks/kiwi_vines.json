@@ -15,7 +15,7 @@
           "condition": "minecraft:block_state_property",
           "block": "hedgehog:kiwi_vines",
           "properties": {
-            "kiwi": "true"
+            "berries": "true"
           }
         }
       ]
