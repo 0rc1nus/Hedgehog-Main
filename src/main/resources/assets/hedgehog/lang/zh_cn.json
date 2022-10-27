@@ -1,0 +1,13 @@
+{
+    "block.hedgehog.kiwi_vines": "猕猴桃藤蔓",
+    "item.hedgehog.kiwi": "猕猴桃",
+    "item.hedgehog.hedgehog_spawn_egg": "刺猬刷怪蛋",
+    "subtitles.entity.hedgehog.hedgehog.ambient": "刺猬 嗅",
+    "subtitles.entity.hedgehog.hedgehog.scared": "刺猬 嘶吼",
+    "subtitles.entity.hedgehog.hedgehog.eating": "刺猬 咀嚼",
+    "subtitles.entity.hedgehog.hedgehog.hurt": "刺猬 受伤",
+    "subtitles.entity.hedgehog.hedgehog.death": "刺猬 死亡",
+    "death.attack.mob.hedgehog:hedgehog": "%1$s被%2$s扎死了",
+    "death.attack.mob.hedgehog:hedgehog.item": "%1$s在挥舞%2$s时被%3$s杀死",
+    "entity.hedgehog.hedgehog": "刺猬"
+  }
