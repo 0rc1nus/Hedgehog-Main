@@ -1,0 +1,13 @@
+{
+  "block.hedgehog.kiwi_vines": "Лианы киви",
+  "item.hedgehog.kiwi": "Киви",
+  "item.hedgehog.hedgehog_spawn_egg": "Яйцо призыва ежа",
+  "subtitles.entity.hedgehog.hedgehog.ambient": "Ёж нюхает",
+  "subtitles.entity.hedgehog.hedgehog.scared": "Ёж шипит",
+  "subtitles.entity.hedgehog.hedgehog.eating": "Ёж жуёт",
+  "subtitles.entity.hedgehog.hedgehog.hurt": "Ёж получает",
+  "subtitles.entity.hedgehog.hedgehog.death": "Ёж погибает",
+  "death.attack.mob.hedgehog:hedgehog": "%1$s был проткнут до смерти %2$s",
+  "death.attack.mob.hedgehog:hedgehog.item": "%1$s был убит %2$s орудующим %3$s",
+  "entity.hedgehog.hedgehog": "Ёж"
+}
