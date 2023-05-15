@@ -152,7 +152,10 @@ public class HedgehogEntity extends TamableAnimal implements NeutralMob {
 
     @Override
     public void travel(Vec3 velocity) {
-        if (this.getScaredTicks() > 0) return;
+        if (this.getScaredTicks() > 0) {
+            this.setDeltaMovement(this.getDeltaMovement().multiply(0, 1, 0));
+            velocity = velocity.multiply(0, 1, 0);
+        }
         super.travel(velocity);
     }
 

@@ -18,10 +18,6 @@ import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
 import net.orcinus.hedgehog.blocks.KiwiVinesBlock;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
-import org.apache.commons.compress.utils.Lists;
-
-import java.util.List;
-import java.util.Random;
 
 public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
 

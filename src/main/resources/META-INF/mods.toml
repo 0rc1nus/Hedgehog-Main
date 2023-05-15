@@ -3,7 +3,7 @@ loaderVersion="[39,)"
 license="All Rights Reserved"
 [[mods]]
 modId="hedgehog"
-version="1.19-1.0.0"
+version="1.19.2-1.0.0"
 displayName="Hedgehog"
 displayURL = "https://discord.gg/5wp2d6xeFW"
 authors = "Orcinus"
