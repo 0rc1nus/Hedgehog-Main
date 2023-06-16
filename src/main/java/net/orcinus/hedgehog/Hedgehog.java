@@ -17,6 +17,7 @@ import net.orcinus.hedgehog.init.HedgehogFeatures;
 import net.orcinus.hedgehog.init.HedgehogItems;
 import net.orcinus.hedgehog.init.HedgehogPlacements;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
+import net.orcinus.hedgehog.init.HedgehogVanillaIntegration;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -52,6 +53,8 @@ public class Hedgehog {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(HedgehogBlocks.KIWI.get(), RenderType.cutout());
+        HedgehogVanillaIntegration.init();
+
     }
 
 }
