@@ -9,8 +9,8 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.MultifaceBlock;
@@ -68,7 +68,7 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     }
 
     @Override
-    public boolean isValidBonemealTarget(BlockGetter world, BlockPos pos, BlockState state, boolean bl) {
+    public boolean isValidBonemealTarget(LevelReader world, BlockPos blockPos, BlockState state, boolean p_50900_) {
         return !state.getValue(KIWI);
     }
 

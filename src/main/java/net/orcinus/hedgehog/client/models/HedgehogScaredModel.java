@@ -12,11 +12,11 @@ import net.minecraft.client.model.geom.builders.PartDefinition;
 import net.minecraft.util.Mth;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.orcinus.hedgehog.entities.HedgehogEntity;
+import net.orcinus.hedgehog.entities.Hedgehog;
 
 @SuppressWarnings("FieldCanBeLocal, unused")
 @OnlyIn(Dist.CLIENT)
-public class HedgehogScaredModel<T extends HedgehogEntity> extends AgeableListModel<T> {
+public class HedgehogScaredModel<T extends Hedgehog> extends AgeableListModel<T> {
 	private final ModelPart root;
 
 	private final ModelPart body;

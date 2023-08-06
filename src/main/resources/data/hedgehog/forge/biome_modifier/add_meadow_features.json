@@ -1,9 +1,0 @@
-{
-  "type": "forge:add_features",
-  "biomes": "minecraft:meadow",
-  "features": [
-    "hedgehog:fallen_birch",
-    "hedgehog:hedgehog_birch_tree"
-  ],
-  "step": "vegetal_decoration"
-}

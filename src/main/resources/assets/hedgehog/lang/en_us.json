@@ -1,6 +1,10 @@
 {
+  "itemGroup.hedgehog.hedgehog": "Hedgehog",
   "block.hedgehog.kiwi_vines": "Kiwi Vines",
+  "block.hedgehog.quill_block": "Block of Quill",
+  "block.hedgehog.quill_wreath": "Quill Wreath",
   "item.hedgehog.kiwi": "Kiwi",
+  "item.hedgehog.quill": "Quill",
   "item.hedgehog.hedgehog_spawn_egg": "Hedgehog Spawn Egg",
   "subtitles.entity.hedgehog.hedgehog.ambient": "Hedgehog sniffs",
   "subtitles.entity.hedgehog.hedgehog.scared": "Hedgehog hisses",

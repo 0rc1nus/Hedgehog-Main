@@ -3,7 +3,7 @@ package net.orcinus.hedgehog.util;
 import com.google.common.collect.Maps;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
-import net.orcinus.hedgehog.Hedgehog;
+import net.orcinus.hedgehog.HedgehogMain;
 
 import java.util.Map;
 
@@ -29,7 +29,7 @@ public class PatreonSkinHandler {
         ResourceLocation id = null;
         for (String texture : NAMES_TO_TEXTURE.keySet()) {
             if (!name.equals(texture)) continue;
-            id = new ResourceLocation(Hedgehog.MODID, "textures/entity/" + NAMES_TO_TEXTURE.get(texture) + "_hedgehog.png");
+            id = new ResourceLocation(HedgehogMain.MODID, "textures/entity/" + NAMES_TO_TEXTURE.get(texture) + "_hedgehog.png");
         }
         return id;
     }
@@ -38,7 +38,7 @@ public class PatreonSkinHandler {
         ResourceLocation id = null;
         for (String texture : NAMES_TO_TEXTURE.keySet()) {
             if (!name.equals(texture)) continue;
-            id = new ResourceLocation(Hedgehog.MODID, "textures/entity/scared_" + NAMES_TO_TEXTURE.get(texture) + "_hedgehog.png");
+            id = new ResourceLocation(HedgehogMain.MODID, "textures/entity/scared_" + NAMES_TO_TEXTURE.get(texture) + "_hedgehog.png");
         }
         return id;
     }

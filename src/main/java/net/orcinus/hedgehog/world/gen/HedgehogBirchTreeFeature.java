@@ -11,17 +11,11 @@ import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LeavesBlock;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.levelgen.feature.DripstoneUtils;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraft.world.level.material.Material;
 import net.orcinus.hedgehog.blocks.KiwiVinesBlock;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
-import org.apache.commons.compress.utils.Lists;
-
-import java.util.List;
-import java.util.Random;
 
 public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> {
 
@@ -46,7 +40,7 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
     public static void generateTree(LevelAccessor world, BlockPos blockPos, RandomSource random, int height, boolean shouldGenerateKiwis) {
         for (int i = 0; i <= height; i++) {
             BlockPos placePos = blockPos.above(i);
-            if (world.isStateAtPosition(placePos, state -> state.is(HedgehogBlocks.KIWI.get()) || state.getMaterial().isReplaceable() || state.isAir() || state.is(Blocks.WATER) || state.getMaterial() == Material.PLANT)) {
+            if (world.isStateAtPosition(placePos, state -> state.is(HedgehogBlocks.KIWI.get()) || state.canBeReplaced() || state.isAir() || state.is(Blocks.WATER) || state.canBeReplaced())) {
                 world.setBlock(placePos, Blocks.BIRCH_LOG.defaultBlockState(), 19);
                 if (shouldGenerateKiwis) {
                     generateVines(world, random, placePos);
@@ -72,13 +66,33 @@ public class HedgehogBirchTreeFeature extends Feature<NoneFeatureConfiguration> 
     private static void generateVines(LevelAccessor world, RandomSource random, BlockPos pos) {
         BlockPos.MutableBlockPos mut = pos.mutable();
         if (random.nextInt(3) == 0) {
-            KiwiVinesFeature.generateVine(world, pos, random, 2);
+            generateVine(world, pos, random, 2);
         }
         for (Direction direction : Direction.values()) {
             BlockPos relative = mut.relative(direction);
             BlockState state = random.nextBoolean() ? HedgehogBlocks.KIWI.get().defaultBlockState().setValue(KiwiVinesBlock.KIWI, true) : HedgehogBlocks.KIWI.get().defaultBlockState();
             if (random.nextBoolean() && world.isEmptyBlock(relative)) {
                 world.setBlock(relative, state.setValue(KiwiVinesBlock.getFaceProperty(direction.getOpposite()), true), 2);
+            }
+        }
+    }
+
+    public static void generateVine(LevelAccessor world, BlockPos pos, RandomSource random, int tries) {
+        BlockPos.MutableBlockPos mut = pos.mutable();
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            for (int i = 0; i < tries; i++) {
+                if (!world.getBlockState(mut.below()).isFaceSturdy(world, mut.below(), Direction.DOWN) || world.isEmptyBlock(mut.below())) mut.move(Direction.DOWN);
+                BlockState kiwi = HedgehogBlocks.KIWI.get().defaultBlockState().setValue(KiwiVinesBlock.getFaceProperty(Direction.DOWN), true);
+                if (random.nextInt(2) == 0 && random.nextBoolean()) kiwi = kiwi.setValue(KiwiVinesBlock.KIWI, true);
+                for (Direction sideDirections : Direction.values()) {
+                    if (world.getBlockState(mut.relative(sideDirections)).isFaceSturdy(world, mut.relative(sideDirections), sideDirections)) {
+                        kiwi = kiwi.setValue(KiwiVinesBlock.getFaceProperty(sideDirections), true);
+                    }
+                }
+                if (!world.getBlockState(mut.below()).is(HedgehogBlocks.KIWI.get()) && !world.isEmptyBlock(mut.below(2)) && world.getBlockState(mut.below()).isFaceSturdy(world, mut.below(), Direction.UP) && !world.isEmptyBlock(mut.below()) && !world.getBlockState(mut).is(HedgehogBlocks.KIWI.get()) && world.getBlockState(mut).canBeReplaced() && world.getFluidState(mut).isEmpty()) {
+                    world.setBlock(mut, kiwi, 2);
+                }
+                mut.move(direction);
             }
         }
     }

@@ -1,0 +1,10 @@
+{
+  "type": "forge:add_spawns",
+  "biomes": "minecraft:meadow",
+  "spawners": {
+    "type": "hedgehog:hedgehog",
+    "maxCount": 6,
+    "minCount": 3,
+    "weight": 40
+  }
+}

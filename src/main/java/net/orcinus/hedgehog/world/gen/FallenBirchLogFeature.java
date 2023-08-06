@@ -38,8 +38,8 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
         } else {
             BlockPos.MutableBlockPos mut = blockPos.mutable();
             for (int i = 0; i <= logLength; i++) {
-                boolean flag = world.getBlockState(mut).getMaterial().isReplaceable() || world.isStateAtPosition(mut, state -> state.isAir() || state.is(Blocks.WATER) || state.is(HedgehogBlocks.KIWI.get()) || state.is(BlockTags.FLOWERS));
-                if (world.getBlockState(mut.below()).getMaterial().isReplaceable() || world.isStateAtPosition(mut.below(), DripstoneUtils::isEmptyOrWater)) {
+                boolean flag = world.getBlockState(mut).canBeReplaced() || world.isStateAtPosition(mut, state -> state.isAir() || state.is(Blocks.WATER) || state.is(HedgehogBlocks.KIWI.get()) || state.is(BlockTags.FLOWERS));
+                if (world.getBlockState(mut.below()).canBeReplaced() || world.isStateAtPosition(mut.below(), DripstoneUtils::isEmptyOrWater)) {
                     mut.move(Direction.DOWN);
                     if (flag) {
                         world.setBlock(mut, Blocks.BIRCH_LOG.defaultBlockState().setValue(RotatedPillarBlock.AXIS, direction.getAxis()), 2);
@@ -63,7 +63,7 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
                 if (random.nextInt(3) == 0) {
                     world.setBlock(relative, kiwi.setValue(KiwiVinesBlock.getFaceProperty(facingDirection.getOpposite()), true), 2);
                     if (random.nextInt(5) == 0){
-                        KiwiVinesFeature.generateVine(world, relative, random, 2);
+                        HedgehogBirchTreeFeature.generateVine(world, relative, random, 2);
                     }
                 }
             }

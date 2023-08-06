@@ -1,29 +1,21 @@
 package net.orcinus.hedgehog.init;
 
-import net.minecraft.core.Holder;
-import net.minecraft.core.Registry;
-import net.minecraft.data.BuiltinRegistries;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.data.worldgen.BootstapContext;
+import net.minecraft.data.worldgen.features.FeatureUtils;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
-import net.minecraft.world.level.levelgen.feature.Feature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.orcinus.hedgehog.Hedgehog;
+import net.orcinus.hedgehog.HedgehogMain;
 
 public class HedgehogConfiguredFeatures {
 
-    public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> FALLEN_BIRCH = registerConfiguredFeature("fallen_birch", HedgehogFeatures.FALLEN_BIRCH.get());
-    public static final Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> HEDGEHOG_BIRCH_TREE = registerConfiguredFeature("hedgehog_birch_tree", HedgehogFeatures.HEDGEHOG_BIRCH_TREE.get());
+    public static final ResourceKey<ConfiguredFeature<?, ?>> FALLEN_BIRCH = ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(HedgehogMain.MODID, "fallen_birch"));
+    public static final ResourceKey<ConfiguredFeature<?, ?>> HEDGEHOG_BIRCH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(HedgehogMain.MODID, "hedgehog_birch_tree"));
 
-    public static Holder<ConfiguredFeature<NoneFeatureConfiguration, ?>> registerConfiguredFeature(String string, Feature<NoneFeatureConfiguration> feature) {
-        return registerConfiguredFeature(string, feature, FeatureConfiguration.NONE);
-    }
-
-    public static <FC extends FeatureConfiguration, F extends Feature<FC>> Holder<ConfiguredFeature<FC, ?>> registerConfiguredFeature(String id, F feature, FC featureConfiguration) {
-        return BuiltinRegistries.registerExact(BuiltinRegistries.CONFIGURED_FEATURE, Hedgehog.MODID  + ":" + id, new ConfiguredFeature<>(feature, featureConfiguration));
-    }
-
-    public static void init() {
+    public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> bootstapContext) {
+        FeatureUtils.register(bootstapContext, FALLEN_BIRCH, HedgehogFeatures.FALLEN_BIRCH.get());
+        FeatureUtils.register(bootstapContext, HEDGEHOG_BIRCH_TREE, HedgehogFeatures.HEDGEHOG_BIRCH_TREE.get());
     }
 
 }
