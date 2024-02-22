@@ -357,10 +357,14 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                 if (!(livingEntity instanceof Hedgehog)) {
                     livingEntity.hurt(this.level().damageSources().cactus(), 2.0F);
                 }
-                this.setScaredTicks(100);
+                if (!this.isTame()) {
+                    this.setScaredTicks(100);
+                }
                 this.alertOthers(livingEntity);
                 this.transferEffects(livingEntity);
-                this.level().broadcastEntityEvent(this, (byte)6);
+                if (livingEntity instanceof Player player && this.getOwnerUUID() != null && player.getUUID().equals(this.getOwnerUUID())) return;
+
+                this.level().broadcastEntityEvent(this, (byte)9);
                 boolean sameHedgehogOwner = livingEntity instanceof Hedgehog hedgehog && hedgehog.isTame() && hedgehog.getOwnerUUID() != null && hedgehog.getOwnerUUID().equals(this.getOwnerUUID());
                 if (this.isTame() && !sameHedgehogOwner) {
                     this.setTarget(livingEntity);
@@ -371,7 +375,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
 
     @Override
     public void handleEntityEvent(byte id) {
-        if (id == 6) {
+        if (id == 9) {
             this.hideAnimationState.startIfStopped(this.tickCount);
         } else {
             super.handleEntityEvent(id);
