@@ -10,7 +10,7 @@ import net.orcinus.hedgehog.HedgehogMain;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.entities.Quill;
 
-public class HedgehogEntities {
+public class HedgehogEntityTypes {
 
     public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, HedgehogMain.MODID);
 

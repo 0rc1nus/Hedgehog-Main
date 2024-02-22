@@ -10,15 +10,14 @@ import net.orcinus.hedgehog.entities.Quill;
 
 @OnlyIn(Dist.CLIENT)
 public class QuillRenderer extends ArrowRenderer<Quill> {
-    private static final ResourceLocation QUILL = new ResourceLocation(HedgehogMain.MODID, "textures/entity/projectiles/quill.png");
+    public static final ResourceLocation TEXTURE = HedgehogMain.id("textures/entity/projectiles/quill.png");
 
-    public QuillRenderer(EntityRendererProvider.Context ctx) {
-        super(ctx);
+    public QuillRenderer(EntityRendererProvider.Context context) {
+        super(context);
     }
 
     @Override
     public ResourceLocation getTextureLocation(Quill quill) {
-        return QUILL;
+        return TEXTURE;
     }
-
 }

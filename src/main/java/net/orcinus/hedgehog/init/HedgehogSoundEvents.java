@@ -13,13 +13,14 @@ public class HedgehogSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, HedgehogMain.MODID);
 
-    public static final RegistryObject<SoundEvent> ENTITY_HEDGEHOG_AMBIENT = registerSound("entity.hedgehog.ambient");
-    public static final RegistryObject<SoundEvent> ENTITY_HEDGEHOG_SCARED = registerSound("entity.hedgehog.scared");
-    public static final RegistryObject<SoundEvent> ENTITY_HEDGEHOG_HURT = registerSound("entity.hedgehog.hurt");
-    public static final RegistryObject<SoundEvent> ENTITY_HEDGEHOG_DEATH = registerSound("entity.hedgehog.death");
-    public static final RegistryObject<SoundEvent> ENTITY_HEDGEHOG_EATING = registerSound("entity.hedgehog.eating");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_AMBIENT = register("entity.hedgehog.ambient");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_HURT = register("entity.hedgehog.hurt");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_DEATH = register("entity.hedgehog.death");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_EAT = register("entity.hedgehog.eat");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_SPLINTER = register("entity.hedgehog.splinter");
+    public static final RegistryObject<SoundEvent> QUILL_LAND = register("entity.quill.land");
 
-    public static RegistryObject<SoundEvent> registerSound(String id) {
+    public static RegistryObject<SoundEvent> register(String id) {
         return SOUND_EVENTS.register(id, () -> SoundEvent.createVariableRangeEvent(new ResourceLocation(HedgehogMain.MODID, id)));
     }
 

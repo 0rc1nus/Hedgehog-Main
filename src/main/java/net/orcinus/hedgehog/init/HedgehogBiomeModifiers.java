@@ -26,7 +26,7 @@ public class HedgehogBiomeModifiers {
 
     public static void bootstrap(BootstapContext<BiomeModifier> bootstapContext) {
         bootstapContext.register(ADD_HEDGEHOGS, new ForgeBiomeModifiers.AddFeaturesBiomeModifier(getBiome(bootstapContext, Biomes.MEADOW), getPlacedFeature(bootstapContext, HedgehogPlacedFeatures.HEDGEHOG_BIRCH_TREE, HedgehogPlacedFeatures.FALLEN_BIRCH), GenerationStep.Decoration.VEGETAL_DECORATION));
-        bootstapContext.register(ADD_MEADOW_FEATURES, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(getBiome(bootstapContext, Biomes.MEADOW), List.of(new MobSpawnSettings.SpawnerData(HedgehogEntities.HEDGEHOG.get(), 40, 3, 6))));
+        bootstapContext.register(ADD_MEADOW_FEATURES, new ForgeBiomeModifiers.AddSpawnsBiomeModifier(getBiome(bootstapContext, Biomes.MEADOW), List.of(new MobSpawnSettings.SpawnerData(HedgehogEntityTypes.HEDGEHOG.get(), 40, 3, 6))));
     }
 
     @SafeVarargs

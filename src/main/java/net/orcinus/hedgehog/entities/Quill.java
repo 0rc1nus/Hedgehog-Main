@@ -1,107 +1,150 @@
 package net.orcinus.hedgehog.entities;
 
-import com.google.common.collect.Sets;
+import net.minecraft.core.particles.BlockParticleOption;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.alchemy.Potion;
-import net.minecraft.world.item.alchemy.PotionUtils;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
-import net.orcinus.hedgehog.init.HedgehogEntities;
-import net.orcinus.hedgehog.init.HedgehogItems;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
+import net.minecraftforge.registries.ForgeRegistries;
+import net.orcinus.hedgehog.init.HedgehogEntityTypes;
+import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
-import java.util.Collection;
-import java.util.Set;
-import java.util.function.Predicate;
+import javax.annotation.Nullable;
 
-public class Quill extends AbstractArrow {
-    private static final EntityDataAccessor<String> POTION = SynchedEntityData.defineId(Quill.class, EntityDataSerializers.STRING);
-    private final Set<MobEffectInstance> effects = Sets.newHashSet();
+public class Quill extends AbstractArrow implements EffectCarrier {
+    private static final EntityDataAccessor<String> STORED_EFFECT = SynchedEntityData.defineId(Quill.class, EntityDataSerializers.STRING);
+    private int duration;
+    private int amplifier;
 
     public Quill(EntityType<? extends AbstractArrow> type, Level world) {
         super(type, world);
     }
 
-    public Quill(Level world, LivingEntity entity) {
-        super(HedgehogEntities.QUILL.get(), entity, world);
+    public Quill(LivingEntity entity, Level world) {
+        super(HedgehogEntityTypes.QUILL.get(), entity, world);
     }
 
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(POTION, Potions.EMPTY.toString());
+        this.entityData.define(STORED_EFFECT, "");
     }
 
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setPotion(Potion.byName(tag.getString("Potion")));
+        this.setStoredEffect(ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
+        this.setDuration(tag.getInt("StoredDuration"));
+        this.setAmplifier(tag.getInt("StoredAmplifier"));
     }
 
     @Override
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putString("Potion", BuiltInRegistries.POTION.getKey(this.getPotion()).toString());
-    }
-
-    public Potion getPotion() {
-        return BuiltInRegistries.POTION.get(ResourceLocation.tryParse(this.entityData.get(POTION)));
-    }
-
-    public void setPotion(Potion potion) {
-        this.entityData.set(POTION, BuiltInRegistries.POTION.getKey(potion).toString());
+        if (this.hasStoredEffect()) {
+            tag.putString("StoredEffect", ForgeRegistries.MOB_EFFECTS.getKey(this.getStoredEffect()).toString());
+            tag.putInt("StoredDuration", this.getDuration());
+            tag.putInt("StoredAmplifier", this.getAmplifier());
+        }
     }
 
     @Override
-    protected ItemStack getPickupItem() {
-        return new ItemStack(HedgehogItems.QUILL.get());
+    public int getDuration() {
+        return this.duration;
+    }
+
+    @Override
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    @Override
+    public int getAmplifier() {
+        return this.amplifier;
+    }
+
+    @Override
+    public void setAmplifier(int amplifier) {
+        this.amplifier = amplifier;
+    }
+
+    @Nullable
+    @Override
+    public MobEffect getStoredEffect() {
+        return ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(this.entityData.get(STORED_EFFECT)));
+    }
+
+    @Override
+    public void setStoredEffect(@Nullable MobEffect mobEffect) {
+        String name = mobEffect == null ? "" : ForgeRegistries.MOB_EFFECTS.getKey(mobEffect).toString();
+        this.entityData.set(STORED_EFFECT, name);
+    }
+
+    @Override
+    public boolean hasStoredEffect() {
+        return !this.entityData.get(STORED_EFFECT).isEmpty();
     }
 
     @Override
     protected void doPostHurtEffects(LivingEntity livingEntity) {
         super.doPostHurtEffects(livingEntity);
-        this.effects.forEach(mobEffectInstance -> {
-            livingEntity.addEffect(mobEffectInstance, this.getEffectSource());
-        });
+        if (this.hasStoredEffect()) {
+            livingEntity.addEffect(new MobEffectInstance(this.getStoredEffect(), this.duration, this.amplifier));
+        }
     }
 
-    public void setEffects(ItemStack itemStack) {
-        Potion potion = PotionUtils.getPotion(itemStack);
-        if (potion != Potions.EMPTY) {
-            this.setPotion(potion);
-            Collection<MobEffectInstance> collection = PotionUtils.getCustomEffects(itemStack);
-            if (!collection.isEmpty()) {
-                collection.stream().map(MobEffectInstance::new).forEach(this.effects::add);
+    @Override
+    protected ItemStack getPickupItem() {
+        return null;
+    }
+
+    @Override
+    protected void onHit(HitResult result) {
+        super.onHit(result);
+        this.discard();
+    }
+
+    @Override
+    protected void onHitBlock(BlockHitResult blockHitResult) {
+        super.onHitBlock(blockHitResult);
+        this.level().broadcastEntityEvent(this, (byte) 3);
+    }
+
+    @Override
+    protected void onHitEntity(EntityHitResult result) {
+        boolean isOwner = this.getOwner() instanceof Hedgehog hedgehog && result.getEntity() instanceof Player player && player.getUUID().equals(hedgehog.getOwnerUUID());
+        if (isOwner) return;
+        super.onHitEntity(result);
+    }
+
+    @Override
+    public void handleEntityEvent(byte b) {
+        if (b == 3) {
+            ParticleOptions particleOptions = new BlockParticleOption(ParticleTypes.BLOCK, Blocks.BIRCH_PLANKS.defaultBlockState());
+            for (int i = 0; i < 8; i++) {
+                this.level().addParticle(particleOptions, this.getX(), this.getY(), this.getZ(), 0.0, 0.0, 0.0);
             }
         }
     }
 
     @Override
-    public void handleEntityEvent(byte id) {
-        if (id == 0) {
-            int i = PotionUtils.getColor(this.getPotion());
-            if (i != -1) {
-                double d0 = (double)(i >> 16 & 255) / 255.0D;
-                double d1 = (double)(i >> 8 & 255) / 255.0D;
-                double d2 = (double)(i & 255) / 255.0D;
-
-                for(int j = 0; j < 20; ++j) {
-                    this.level().addParticle(ParticleTypes.ENTITY_EFFECT, this.getRandomX(0.5D), this.getRandomY(), this.getRandomZ(0.5D), d0, d1, d2);
-                }
-            }
-        } else {
-            super.handleEntityEvent(id);
-        }
-
+    protected SoundEvent getDefaultHitGroundSoundEvent() {
+        return HedgehogSoundEvents.QUILL_LAND.get();
     }
 }

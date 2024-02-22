@@ -2,6 +2,7 @@ package net.orcinus.hedgehog;
 
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -13,7 +14,7 @@ import net.orcinus.hedgehog.events.MobEvents;
 import net.orcinus.hedgehog.init.HedgehogActivities;
 import net.orcinus.hedgehog.init.HedgehogBlocks;
 import net.orcinus.hedgehog.init.HedgehogCreativeModeTabs;
-import net.orcinus.hedgehog.init.HedgehogEntities;
+import net.orcinus.hedgehog.init.HedgehogEntityTypes;
 import net.orcinus.hedgehog.init.HedgehogFeatures;
 import net.orcinus.hedgehog.init.HedgehogItems;
 import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
@@ -44,7 +45,7 @@ public class HedgehogMain {
         HedgehogBlocks.BLOCKS.register(modEventBus);
         HedgehogCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
         HedgehogItems.ITEMS.register(modEventBus);
-        HedgehogEntities.ENTITY_TYPES.register(modEventBus);
+        HedgehogEntityTypes.ENTITY_TYPES.register(modEventBus);
         HedgehogSoundEvents.SOUND_EVENTS.register(modEventBus);
         HedgehogFeatures.FEATURES.register(modEventBus);
         HedgehogMemoryModuleTypes.MEMORY_MODULE_TYPES.register(modEventBus);
@@ -61,6 +62,10 @@ public class HedgehogMain {
 
     private void clientSetup(final FMLClientSetupEvent event) {
         ItemBlockRenderTypes.setRenderLayer(HedgehogBlocks.KIWI.get(), RenderType.cutout());
+    }
+
+    public static ResourceLocation id(String name) {
+        return new ResourceLocation(MODID, name);
     }
 
 }

@@ -17,13 +17,13 @@
     ],
     "subtitle": "subtitles.entity.hedgehog.hedgehog.scared"
   },
-  "entity.hedgehog.eating": {
+  "entity.hedgehog.eat": {
     "sounds": [
       "minecraft:mob/fox/eat1",
       "minecraft:mob/fox/eat2",
       "minecraft:mob/fox/eat3"
     ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.eating"
+    "subtitle": "subtitles.entity.hedgehog.hedgehog.eat"
   },
   "entity.hedgehog.hurt": {
     "sounds": [
@@ -36,5 +36,15 @@
       "hedgehog:entity/hedgehog/death"
     ],
     "subtitle": "subtitles.entity.hedgehog.hedgehog.death"
+  },
+  "entity.quill.land": {
+    "sounds": [
+      {
+        "name": "minecraft:block.mangrove_root.break",
+        "type": "event",
+        "volume": 0.4
+      }
+    ],
+    "subtitle": "subtitles.entity.quill.land"
   }
 }
