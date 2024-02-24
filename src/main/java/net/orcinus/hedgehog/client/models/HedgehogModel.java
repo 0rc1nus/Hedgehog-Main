@@ -107,6 +107,7 @@ public class HedgehogModel<T extends Hedgehog> extends AgeableHierarchicalModel<
 		this.animateWalk(HedgehogAnimations.HEDGEHOG_WALK, limbSwing, limbSwingAmount, 2.0F, 2.5F);
 		this.animate(entity.idleAnimationState, HedgehogAnimations.HEDGEHOG_IDLE, ageInTicks, 1.0F);
 		this.animate(entity.splinterAnimationState, HedgehogAnimations.HEDGEHOG_SPLINTER, ageInTicks, 1.0F);
+		this.animate(entity.hidingSplinterAnimationState, HedgehogAnimations.HEDGEHOG_HIDE_SPLINTER, ageInTicks, 1.0F);
 		this.animate(entity.hideAnimationState, HedgehogAnimations.HEDGEHOG_HIDE, ageInTicks, 1.0F);
 		this.animate(entity.hidingIdleAnimationState, HedgehogAnimations.HEDGEHOG_HIDE_IDLE, ageInTicks, 1.0F);
 	}
