@@ -12,7 +12,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.HedgehogMain;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
-import net.orcinus.hedgehog.client.renderers.layers.HedgehogClothLayer;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.init.HedgehogModelLayers;
 import net.orcinus.hedgehog.util.PatreonSkinHandler;
@@ -23,7 +22,6 @@ public class HedgehogRenderer extends MobRenderer<Hedgehog, EntityModel<Hedgehog
 
     public HedgehogRenderer(EntityRendererProvider.Context context) {
         super(context, new HedgehogModel<>(context.bakeLayer(HedgehogModelLayers.HEDGEHOG)), 0.4F);
-        this.addLayer(new HedgehogClothLayer(this, context.getModelSet()));
     }
 
     @Override

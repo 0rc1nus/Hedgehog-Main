@@ -34,8 +34,6 @@ import net.minecraft.world.entity.ai.memory.MemoryModuleType;
 import net.minecraft.world.entity.ai.sensing.Sensor;
 import net.minecraft.world.entity.ai.sensing.SensorType;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.DyeItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -52,14 +50,12 @@ import net.orcinus.hedgehog.init.HedgehogSensorTypes;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 import java.util.UUID;
 
 public class Hedgehog extends TamableAnimal implements EffectCarrier {
     private static final ImmutableList<? extends SensorType<? extends Sensor<? super Hedgehog>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, HedgehogSensorTypes.HEDGEHOG_TEMPTATIONS.get(), HedgehogSensorTypes.HEDGEHOG_ATTACKABLES.get());
     private static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.IS_PANICKING, MemoryModuleType.ITEM_PICKUP_COOLDOWN_TICKS, HedgehogMemoryModuleTypes.FARMLAND_POS.get(), HedgehogMemoryModuleTypes.CHEWING.get(), MemoryModuleType.LIKED_PLAYER, HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get(), HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get());
     private static final EntityDataAccessor<Integer> SCARED_TICKS = SynchedEntityData.defineId(Hedgehog.class, EntityDataSerializers.INT);
-    private static final EntityDataAccessor<Integer> COLLAR_COLOR = SynchedEntityData.defineId(Hedgehog.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> STORED_EFFECT = SynchedEntityData.defineId(Hedgehog.class, EntityDataSerializers.STRING);
     public AnimationState splinterAnimationState = new AnimationState();
     public AnimationState hidingSplinterAnimationState = new AnimationState();
@@ -81,7 +77,6 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
         super.defineSynchedData();
         this.entityData.define(SCARED_TICKS, 0);
         this.entityData.define(STORED_EFFECT, "");
-        this.entityData.define(COLLAR_COLOR, DyeColor.RED.getId());
     }
 
     @Override
@@ -236,14 +231,6 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
 
     public boolean isScared() {
         return this.entityData.get(SCARED_TICKS) > 0;
-    }
-
-    public DyeColor getCollarColor() {
-        return DyeColor.byId(this.entityData.get(COLLAR_COLOR));
-    }
-
-    public void setCollarColor(DyeColor dyeColor) {
-        this.entityData.set(COLLAR_COLOR, dyeColor.getId());
     }
 
     @Override
@@ -439,22 +426,6 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                 this.gameEvent(GameEvent.EAT, this);
                 return InteractionResult.SUCCESS;
             } else {
-                if (item instanceof DyeItem dyeitem) {
-                    if (this.isOwnedBy(player)) {
-                        DyeColor dyecolor = dyeitem.getDyeColor();
-                        if (dyecolor != this.getCollarColor()) {
-                            this.setCollarColor(dyecolor);
-                            if (!player.getAbilities().instabuild) {
-                                itemStack.shrink(1);
-                            }
-
-                            return InteractionResult.SUCCESS;
-                        }
-
-                        return super.mobInteract(player, hand);
-                    }
-                }
-
                 if (item instanceof PotionItem) {
                     MobEffectInstance mobEffectInstance = PotionUtils.getMobEffects(itemStack).get(0);
                     this.setStoredEffect(mobEffectInstance.getEffect());
