@@ -97,6 +97,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                 this.hidingIdleAnimationState.stop();
             }
         }
+        super.onSyncedDataUpdated(data);
     }
 
     @Override
@@ -303,16 +304,15 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
         super.aiStep();
         boolean hasEffect = this.hasStoredEffect();
         if (!this.level().isClientSide()) {
-            if (this.isAlive()) {
-                this.level().getEntitiesOfClass(Mob.class, this.getBoundingBox().inflate(0.3D)).stream().filter(LivingEntity::isAlive).forEach(this::transferEffects);
-            }
             if (this.getScaredTicks() > 0) {
                 this.setScaredTicks(this.getScaredTicks() - 1);
                 if (this.getScaredTicks() <= 96) {
                     this.setPose(Pose.CROUCHING);
                 }
             } else {
-                this.setPose(Pose.STANDING);
+                if (this.isCrouching()) {
+                    this.setPose(Pose.STANDING);
+                }
             }
 //            if (this.isBeingBrushed()) {
 //                if (this.getLastHurtByMob() != null && this.getLastHurtByMob().isAlive()) {
@@ -359,12 +359,12 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                 }
                 if (!this.isTame()) {
                     this.setScaredTicks(100);
+                    this.level().broadcastEntityEvent(this, (byte)9);
                 }
                 this.alertOthers(livingEntity);
                 this.transferEffects(livingEntity);
                 if (livingEntity instanceof Player player && this.getOwnerUUID() != null && player.getUUID().equals(this.getOwnerUUID())) return;
 
-                this.level().broadcastEntityEvent(this, (byte)9);
                 boolean sameHedgehogOwner = livingEntity instanceof Hedgehog hedgehog && hedgehog.isTame() && hedgehog.getOwnerUUID() != null && hedgehog.getOwnerUUID().equals(this.getOwnerUUID());
                 if (this.isTame() && !sameHedgehogOwner) {
                     this.setTarget(livingEntity);

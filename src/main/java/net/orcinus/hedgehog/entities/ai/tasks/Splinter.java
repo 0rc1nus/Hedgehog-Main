@@ -37,7 +37,7 @@ public class Splinter extends Behavior<Hedgehog> {
     @Override
     protected boolean checkExtraStartConditions(ServerLevel world, Hedgehog hedgehog) {
         Optional<LivingEntity> memory = hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET);
-        if (memory.isEmpty() || !hedgehog.isTame() || hedgehog.isOrderedToSit()) return false;
+        if (memory.isEmpty() || !hedgehog.isTame() || hedgehog.isBaby()) return false;
         LivingEntity entity = memory.get();
         if (entity instanceof ServerPlayer serverPlayer && serverPlayer.gameMode.isSurvival()) {
             if (hedgehog.getOwnerUUID() != null && hedgehog.getOwnerUUID().equals(serverPlayer.getUUID())) return false;
@@ -53,6 +53,7 @@ public class Splinter extends Behavior<Hedgehog> {
     @Override
     protected void start(ServerLevel world, Hedgehog hedgehog, long p_22542_) {
         hedgehog.getBrain().setMemory(HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get(), DURATION);
+        hedgehog.setPose(Pose.SPIN_ATTACK);
         if (!hedgehog.isScared()) {
             hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(livingEntity -> {
                 BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1.0F, 3);
@@ -85,9 +86,6 @@ public class Splinter extends Behavior<Hedgehog> {
                 world.addFreshEntity(quill);
             }
             hedgehog.playSound(SoundEvents.SNIFFER_DROP_SEED, 1.0F, 1.0F);
-            if (hedgehog.hasPose(Pose.STANDING)) {
-                hedgehog.setPose(Pose.SPIN_ATTACK);
-            }
         }
     }
 

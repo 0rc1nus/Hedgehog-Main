@@ -10,6 +10,7 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.AnimalMakeLove;
 import net.minecraft.world.entity.ai.behavior.AnimalPanic;
@@ -45,6 +46,10 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class HedgehogAi {
+    private static final Predicate<PathfinderMob> SHOULD_PANIC = (mob) -> {
+        if (mob instanceof Hedgehog hedgehog && hedgehog.isTame()) return false;
+        return mob.getLastHurtByMob() != null || mob.isFreezing() || mob.isOnFire();
+    };
 
     public static Brain<?> makeBrain(Brain<Hedgehog> brain) {
         initCoreActivity(brain);
@@ -59,7 +64,7 @@ public class HedgehogAi {
     public static void initCoreActivity(Brain<Hedgehog> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim(0.8F),
-                new AnimalPanic(1.25F),
+                new AnimalPanic(1.25F, SHOULD_PANIC),
                 new Sit(),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink() {
@@ -82,7 +87,12 @@ public class HedgehogAi {
                 Pair.of(3, SetEntityLookTargetSometimes.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))),
                 Pair.of(4, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)),
                 Pair.of(5, new RandomLookAround(UniformInt.of(150, 250), 30.0F, 0.0F, 0.0F)),
-                Pair.of(6, new RunOne<>(ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(Pair.of(RandomStroll.stroll(1.0F), 1), Pair.of(SetWalkTargetFromLookTarget.create(2.0F, 3), 1), Pair.of(new DoNothing(30, 60), 1))))
+                Pair.of(6, new RunOne<>(
+                        ImmutableMap.of(MemoryModuleType.WALK_TARGET, MemoryStatus.VALUE_ABSENT), ImmutableList.of(
+                                Pair.of(RandomStroll.stroll(1.0F), 1),
+                        Pair.of(SetWalkTargetFromLookTarget.create(1.0F, 3), 1),
+                        Pair.of(new DoNothing(30, 60), 1))
+                ))
         ));
     }
 
