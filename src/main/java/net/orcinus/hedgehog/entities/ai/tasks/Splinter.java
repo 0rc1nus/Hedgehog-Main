@@ -85,7 +85,7 @@ public class Splinter extends Behavior<Hedgehog> {
                 quill.setBaseDamage(4);
                 world.addFreshEntity(quill);
             }
-            hedgehog.playSound(QUILL_SHOOT.get(), 1, 1);
+            hedgehog.playSound(HedgehogSoundEvents.QUILL_SHOOT.get(), 1, 1);
         }
     }
 
