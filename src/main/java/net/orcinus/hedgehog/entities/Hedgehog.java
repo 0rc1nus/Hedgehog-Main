@@ -17,7 +17,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.AnimationState;
+import net.minecraft.world.entity.EntityDimensions;
+import net.minecraft.world.entity.EntitySelector;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -39,11 +47,12 @@ import net.orcinus.hedgehog.entities.ai.HedgehogAi;
 import net.orcinus.hedgehog.init.HedgehogEntityTypes;
 import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
 import net.orcinus.hedgehog.init.HedgehogSensorTypes;
+import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
 import javax.annotation.Nullable;
 import java.util.UUID;
 
-import static net.orcinus.hedgehog.init.HedgehogSoundEvents.*;
+import static net.orcinus.hedgehog.init.HedgehogSoundEvents.HEDGEHOG_IDLE;
 
 public class Hedgehog extends TamableAnimal implements EffectCarrier {
     private static final ImmutableList<? extends SensorType<? extends Sensor<? super Hedgehog>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, HedgehogSensorTypes.HEDGEHOG_TEMPTATIONS.get(), HedgehogSensorTypes.HEDGEHOG_ATTACKABLES.get());
@@ -206,18 +215,18 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return HEDGEHOG_HURT.get();
+        return HedgehogSoundEvents.HEDGEHOG_HURT.get();
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return HEDGEHOG_DEATH.get();
+        return HedgehogSoundEvents.HEDGEHOG_DEATH.get();
     }
 
     @Override
     public SoundEvent getEatingSound(ItemStack p_21202_) {
-        return HEDGEHOG_EAT.get();
+        return HedgehogSoundEvents.HEDGEHOG_EAT.get();
     }
 
     public int getScaredTicks() {

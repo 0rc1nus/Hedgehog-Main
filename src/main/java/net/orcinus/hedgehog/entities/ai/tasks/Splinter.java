@@ -17,10 +17,9 @@ import net.minecraft.world.phys.Vec3;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.entities.Quill;
 import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
+import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
 import java.util.Optional;
-
-import static net.orcinus.hedgehog.init.HedgehogSoundEvents.*;
 
 public class Splinter extends Behavior<Hedgehog> {
     private static final int DURATION = 100;
@@ -59,7 +58,7 @@ public class Splinter extends Behavior<Hedgehog> {
             hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(livingEntity -> {
                 BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1, 3);
             });
-            hedgehog.playSound(HEDGEHOG_START_SHOOTING_QUILLS.get(), 1, 1);
+            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_START_SHOOTING_QUILLS.get(), 1, 1);
         }
     }
 

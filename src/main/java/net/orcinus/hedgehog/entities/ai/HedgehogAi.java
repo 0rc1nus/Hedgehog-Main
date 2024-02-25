@@ -46,10 +46,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 
 public class HedgehogAi {
-    private static final Predicate<PathfinderMob> SHOULD_PANIC = (mob) -> {
-        if (mob instanceof Hedgehog hedgehog && hedgehog.isTame()) return false;
-        return mob.getLastHurtByMob() != null || mob.isFreezing() || mob.isOnFire();
-    };
 
     public static Brain<?> makeBrain(Brain<Hedgehog> brain) {
         initCoreActivity(brain);
@@ -64,7 +60,6 @@ public class HedgehogAi {
     public static void initCoreActivity(Brain<Hedgehog> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim(0.8F),
-                new AnimalPanic(1.25F, SHOULD_PANIC),
                 new Sit(),
                 new LookAtTargetSink(45, 90),
                 new MoveToTargetSink() {
