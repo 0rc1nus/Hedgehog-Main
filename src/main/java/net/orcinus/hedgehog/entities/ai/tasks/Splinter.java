@@ -27,8 +27,8 @@ public class Splinter extends Behavior<Hedgehog> {
 
     public Splinter() {
         super(ImmutableMap.of(
-                HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get(), MemoryStatus.VALUE_ABSENT,
-                HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get(), MemoryStatus.VALUE_ABSENT,
+                HedgehogMemoryModuleTypes.SPLINTERING_TICKS, MemoryStatus.VALUE_ABSENT,
+                HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN, MemoryStatus.VALUE_ABSENT,
                 MemoryModuleType.ATTACK_TARGET, MemoryStatus.VALUE_PRESENT,
                 MemoryModuleType.LOOK_TARGET, MemoryStatus.REGISTERED
         ), DURATION);
@@ -52,19 +52,19 @@ public class Splinter extends Behavior<Hedgehog> {
 
     @Override
     protected void start(ServerLevel world, Hedgehog hedgehog, long p_22542_) {
-        hedgehog.getBrain().setMemory(HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get(), DURATION);
+        hedgehog.getBrain().setMemory(HedgehogMemoryModuleTypes.SPLINTERING_TICKS, DURATION);
         hedgehog.setPose(Pose.SPIN_ATTACK);
         if (!hedgehog.isScared()) {
             hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(livingEntity -> {
                 BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1.0F, 3);
             });
-            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_SPLINTER.get(), 1.0F, 1.0F);
+            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_SPLINTER, 1.0F, 1.0F);
         }
     }
 
     @Override
     protected void tick(ServerLevel world, Hedgehog hedgehog, long p_22553_) {
-        Optional<Integer> memory = hedgehog.getBrain().getMemory(HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get());
+        Optional<Integer> memory = hedgehog.getBrain().getMemory(HedgehogMemoryModuleTypes.SPLINTERING_TICKS);
         if (memory.isEmpty()) return;
         int i = memory.get();
         if (i == 0) return;
@@ -91,7 +91,7 @@ public class Splinter extends Behavior<Hedgehog> {
 
     @Override
     protected void stop(ServerLevel world, Hedgehog hedgehog, long p_22550_) {
-        hedgehog.getBrain().setMemory(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get(), COOLDOWN);
+        hedgehog.getBrain().setMemory(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN, COOLDOWN);
         hedgehog.getBrain().eraseMemory(MemoryModuleType.ATTACK_TARGET);
         hedgehog.setPose(Pose.STANDING);
     }

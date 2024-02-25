@@ -14,8 +14,8 @@ public class HedgehogConfiguredFeatures {
     public static final ResourceKey<ConfiguredFeature<?, ?>> HEDGEHOG_BIRCH_TREE = ResourceKey.create(Registries.CONFIGURED_FEATURE, new ResourceLocation(HedgehogMain.MODID, "hedgehog_birch_tree"));
 
     public static void bootstrap(BootstapContext<ConfiguredFeature<?, ?>> bootstapContext) {
-        FeatureUtils.register(bootstapContext, FALLEN_BIRCH, HedgehogFeatures.FALLEN_BIRCH.get());
-        FeatureUtils.register(bootstapContext, HEDGEHOG_BIRCH_TREE, HedgehogFeatures.HEDGEHOG_BIRCH_TREE.get());
+        FeatureUtils.register(bootstapContext, FALLEN_BIRCH, HedgehogFeatures.FALLEN_BIRCH);
+        FeatureUtils.register(bootstapContext, HEDGEHOG_BIRCH_TREE, HedgehogFeatures.HEDGEHOG_BIRCH_TREE);
     }
 
 }

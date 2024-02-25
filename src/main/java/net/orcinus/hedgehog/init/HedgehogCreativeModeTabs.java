@@ -1,21 +1,22 @@
 package net.orcinus.hedgehog.init;
 
-import net.minecraft.core.registries.Registries;
+import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
-import net.minecraft.world.item.Item;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.resources.ResourceLocation;
 import net.orcinus.hedgehog.HedgehogMain;
 
-@Mod.EventBusSubscriber(modid = HedgehogMain.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class HedgehogCreativeModeTabs {
 
-    public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, HedgehogMain.MODID);
-
-    public static final RegistryObject<CreativeModeTab> HEDGEHOG = CREATIVE_MODE_TABS.register("hedgehog", () -> CreativeModeTab.builder().title(Component.translatable("itemGroup.hedgehog.hedgehog")).icon(HedgehogItems.KIWI.get()::getDefaultInstance).displayItems((itemDisplayParameters, output) -> {
-        HedgehogItems.ITEMS.getEntries().stream().map(RegistryObject::get).forEach(output::accept);
-    }).build());
+    public static void init() {
+        Registry.register(BuiltInRegistries.CREATIVE_MODE_TAB, HedgehogMain.id("hedgehog"), FabricItemGroup.builder()
+                .icon(HedgehogItems.KIWI::getDefaultInstance)
+                .title(Component.translatable("itemGroup.hedgehog.hedgehog"))
+                .displayItems((itemDisplayParameters, output) -> {
+                    HedgehogItems.ITEMS.keySet().forEach(resourceLocation -> output.accept(HedgehogItems.ITEMS.get(resourceLocation)));
+                })
+                .build());
+    }
 
 }

@@ -2,21 +2,21 @@ package net.orcinus.hedgehog.client.renderers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.orcinus.hedgehog.HedgehogMain;
 import net.orcinus.hedgehog.client.models.HedgehogModel;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.init.HedgehogModelLayers;
 import net.orcinus.hedgehog.util.PatreonSkinHandler;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class HedgehogRenderer extends MobRenderer<Hedgehog, EntityModel<Hedgehog>> {
     public static final ResourceLocation TEXTURE = new ResourceLocation(HedgehogMain.MODID, "textures/entity/hedgehog.png");
 

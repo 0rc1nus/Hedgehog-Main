@@ -32,13 +32,13 @@ public class FallenBirchLogFeature extends Feature<NoneFeatureConfiguration> {
         RandomSource random = context.random();
         Direction direction = Direction.Plane.HORIZONTAL.getRandomDirection(random);
         int logLength = Mth.nextInt(random, 3, 6);
-        BlockState kiwi = random.nextBoolean() ? HedgehogBlocks.KIWI.get().defaultBlockState() : HedgehogBlocks.KIWI.get().defaultBlockState().setValue(KiwiVinesBlock.KIWI, true);
+        BlockState kiwi = random.nextBoolean() ? HedgehogBlocks.KIWI.defaultBlockState() : HedgehogBlocks.KIWI.defaultBlockState().setValue(KiwiVinesBlock.KIWI, true);
         if (!world.getBlockState(blockPos.below()).is(BlockTags.DIRT)) {
             return false;
         } else {
             BlockPos.MutableBlockPos mut = blockPos.mutable();
             for (int i = 0; i <= logLength; i++) {
-                boolean flag = world.getBlockState(mut).canBeReplaced() || world.isStateAtPosition(mut, state -> state.isAir() || state.is(Blocks.WATER) || state.is(HedgehogBlocks.KIWI.get()) || state.is(BlockTags.FLOWERS));
+                boolean flag = world.getBlockState(mut).canBeReplaced() || world.isStateAtPosition(mut, state -> state.isAir() || state.is(Blocks.WATER) || state.is(HedgehogBlocks.KIWI) || state.is(BlockTags.FLOWERS));
                 if (world.getBlockState(mut.below()).canBeReplaced() || world.isStateAtPosition(mut.below(), DripstoneUtils::isEmptyOrWater)) {
                     mut.move(Direction.DOWN);
                     if (flag) {

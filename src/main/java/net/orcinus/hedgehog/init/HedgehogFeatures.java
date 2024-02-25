@@ -1,21 +1,32 @@
 package net.orcinus.hedgehog.init;
 
+import com.google.common.collect.Maps;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.NoneFeatureConfiguration;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import net.orcinus.hedgehog.HedgehogMain;
 import net.orcinus.hedgehog.world.gen.FallenBirchLogFeature;
 import net.orcinus.hedgehog.world.gen.HedgehogBirchTreeFeature;
 
-@Mod.EventBusSubscriber(modid = HedgehogMain.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import java.util.Map;
+
 public class HedgehogFeatures {
 
-    public static final DeferredRegister<Feature<?>> FEATURES = DeferredRegister.create(ForgeRegistries.FEATURES, HedgehogMain.MODID);
+    public static final Map<ResourceLocation, Feature<?>> FEATURES = Maps.newLinkedHashMap();
 
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> FALLEN_BIRCH = FEATURES.register("fallen_birch", () -> new FallenBirchLogFeature(NoneFeatureConfiguration.CODEC));
-    public static final RegistryObject<Feature<NoneFeatureConfiguration>> HEDGEHOG_BIRCH_TREE = FEATURES.register("hedgehog_birch_tree", () -> new HedgehogBirchTreeFeature(NoneFeatureConfiguration.CODEC));
+    public static final Feature<NoneFeatureConfiguration> FALLEN_BIRCH = register("fallen_birch", new FallenBirchLogFeature(NoneFeatureConfiguration.CODEC));
+    public static final Feature<NoneFeatureConfiguration> HEDGEHOG_BIRCH_TREE = register("hedgehog_birch_tree", new HedgehogBirchTreeFeature(NoneFeatureConfiguration.CODEC));
+
+    public static <FC extends FeatureConfiguration> Feature<FC> register(String name, Feature<FC> feature) {
+        FEATURES.put(HedgehogMain.id(name), feature);
+        return feature;
+    }
+
+    public static void init() {
+        FEATURES.keySet().forEach(resourceLocation -> Registry.register(BuiltInRegistries.FEATURE, resourceLocation, FEATURES.get(resourceLocation)));
+    }
 
 }

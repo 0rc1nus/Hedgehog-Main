@@ -21,6 +21,9 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.orcinus.hedgehog.init.HedgehogItems;
+import net.orcinus.hedgehog.mixin.MultifaceBlockAccessor;
+
+import javax.swing.text.html.BlockView;
 
 public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock {
     public static final BooleanProperty KIWI = BlockStateProperties.BERRIES;
@@ -33,7 +36,6 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
 
     @Override
     public void randomTick(BlockState state, ServerLevel world, BlockPos blockPos, RandomSource random) {
-        if (!world.isAreaLoaded(blockPos, 1)) return;
         if (random.nextFloat() < 0.4F) {
             this.performBonemeal(world, random, blockPos, state);
         }
@@ -53,10 +55,10 @@ public class KiwiVinesBlock extends MultifaceBlock implements BonemealableBlock 
     @Override
     public InteractionResult use(BlockState state, Level world, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hit) {
         if (state.getValue(KIWI)) {
-            PROPERTY_BY_DIRECTION.forEach((direction, bl) -> {
+            MultifaceBlockAccessor.getPROPERTY_BY_DIRECTION().forEach((direction, bl) -> {
                 BooleanProperty booleanproperty = getFaceProperty(direction);
                 if (state.hasProperty(booleanproperty) && state.getValue(booleanproperty)) {
-                    Block.popResource(world, pos, new ItemStack(HedgehogItems.KIWI.get(), 1));
+                    Block.popResource(world, pos, new ItemStack(HedgehogItems.KIWI, 1));
                 }
             });
             world.setBlock(pos, state.setValue(KIWI, false), 2);

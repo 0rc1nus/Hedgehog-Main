@@ -3,6 +3,7 @@ package net.orcinus.hedgehog.entities;
 import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -21,7 +22,6 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.orcinus.hedgehog.init.HedgehogEntityTypes;
 import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
@@ -37,7 +37,7 @@ public class Quill extends AbstractArrow implements EffectCarrier {
     }
 
     public Quill(LivingEntity entity, Level world) {
-        super(HedgehogEntityTypes.QUILL.get(), entity, world);
+        super(HedgehogEntityTypes.QUILL, entity, world);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class Quill extends AbstractArrow implements EffectCarrier {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        this.setStoredEffect(ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
+        this.setStoredEffect(BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
         this.setDuration(tag.getInt("StoredDuration"));
         this.setAmplifier(tag.getInt("StoredAmplifier"));
     }
@@ -58,7 +58,7 @@ public class Quill extends AbstractArrow implements EffectCarrier {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         if (this.hasStoredEffect()) {
-            tag.putString("StoredEffect", ForgeRegistries.MOB_EFFECTS.getKey(this.getStoredEffect()).toString());
+            tag.putString("StoredEffect", BuiltInRegistries.MOB_EFFECT.getKey(this.getStoredEffect()).toString());
             tag.putInt("StoredDuration", this.getDuration());
             tag.putInt("StoredAmplifier", this.getAmplifier());
         }
@@ -87,12 +87,12 @@ public class Quill extends AbstractArrow implements EffectCarrier {
     @Nullable
     @Override
     public MobEffect getStoredEffect() {
-        return ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(this.entityData.get(STORED_EFFECT)));
+        return BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(this.entityData.get(STORED_EFFECT)));
     }
 
     @Override
     public void setStoredEffect(@Nullable MobEffect mobEffect) {
-        String name = mobEffect == null ? "" : ForgeRegistries.MOB_EFFECTS.getKey(mobEffect).toString();
+        String name = mobEffect == null ? "" : BuiltInRegistries.MOB_EFFECT.getKey(mobEffect).toString();
         this.entityData.set(STORED_EFFECT, name);
     }
 
@@ -115,15 +115,10 @@ public class Quill extends AbstractArrow implements EffectCarrier {
     }
 
     @Override
-    protected void onHit(HitResult result) {
-        super.onHit(result);
-        this.discard();
-    }
-
-    @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
         this.level().broadcastEntityEvent(this, (byte) 3);
+        this.discard();
     }
 
     @Override
@@ -131,6 +126,7 @@ public class Quill extends AbstractArrow implements EffectCarrier {
         boolean isOwner = this.getOwner() instanceof Hedgehog hedgehog && result.getEntity() instanceof Player player && player.getUUID().equals(hedgehog.getOwnerUUID());
         if (isOwner) return;
         super.onHitEntity(result);
+        this.discard();
     }
 
     @Override
@@ -145,6 +141,6 @@ public class Quill extends AbstractArrow implements EffectCarrier {
 
     @Override
     protected SoundEvent getDefaultHitGroundSoundEvent() {
-        return HedgehogSoundEvents.QUILL_LAND.get();
+        return HedgehogSoundEvents.QUILL_LAND;
     }
 }

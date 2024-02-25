@@ -1,0 +1,45 @@
+{
+	"schemaVersion": 1,
+	"id": "hedgehog",
+	"version": "${version}",
+	"name": "Hedgehog",
+	"description": "This mod aims to improve the wild update",
+	"authors": [
+		"Orcinus",
+		"Ninni"
+	],
+	"contributors": [
+		"bunten"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "All Rights Reserved",
+	"icon": "assets/hedgehog/icon.png",
+	"accessWidener": "hedgehog.accesswidener",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"net.orcinus.hedgehog.HedgehogMain"
+		],
+		"client": [
+			"net.orcinus.hedgehog.HedgehogClient"
+		],
+		"fabric-datagen": [
+			"net.orcinus.hedgehog.data.HedgehogDataGenerator"
+		]
+	},
+	"mixins": [
+		"hedgehog.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.14.6",
+		"fabric": "*",
+		"minecraft": "~1.20",
+		"java": ">=17"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

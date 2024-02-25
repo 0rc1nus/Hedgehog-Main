@@ -1,7 +1,0 @@
-// 1.20	2023-07-10T17:24:14.5447213	Registries
-cce5c5a1ca9614363846d292dea19a27021f3045 data/hedgehog/forge/biome_modifier/add_hedgehogs.json
-873ae6cdf8c35b2f0c00acb4b5fb2b7f128e5b9a data/hedgehog/forge/biome_modifier/add_meadow_features.json
-cd5c6fae1498cdf3bf979f99b178687d7f2f9dd1 data/hedgehog/worldgen/configured_feature/fallen_birch.json
-d2f07276587c84b5f6fec7fe91d2aab62c6d5ef2 data/hedgehog/worldgen/configured_feature/hedgehog_birch_tree.json
-c140501bdaac5cb13b8b9b644164887c0503d013 data/hedgehog/worldgen/placed_feature/fallen_birch.json
-4a898dbacb0d539ec4501b50735b0578afcce6f5 data/hedgehog/worldgen/placed_feature/hedgehog_birch_tree.json

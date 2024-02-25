@@ -1,21 +1,32 @@
 package net.orcinus.hedgehog.init;
 
+import com.google.common.collect.Maps;
+import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
-import net.minecraftforge.common.ForgeSpawnEggItem;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
+import net.minecraft.world.item.SpawnEggItem;
 import net.orcinus.hedgehog.HedgehogMain;
 
-@Mod.EventBusSubscriber(modid = HedgehogMain.MODID, bus = Mod.EventBusSubscriber.Bus.MOD)
+import java.util.Map;
+
 public class HedgehogItems {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, HedgehogMain.MODID);
+    public static final Map<ResourceLocation, Item> ITEMS = Maps.newLinkedHashMap();
 
-    public static final RegistryObject<Item> HEDGEHOG_SPAWN_EGG = ITEMS.register("hedgehog_spawn_egg", () -> new ForgeSpawnEggItem(HedgehogEntityTypes.HEDGEHOG, 5654847, 13352614, new Item.Properties()));
-    public static final RegistryObject<Item> KIWI = ITEMS.register("kiwi", () -> new ItemNameBlockItem(HedgehogBlocks.KIWI.get(), (new Item.Properties()).food(HedgehogFoodProperties.KIWI)));
-//    public static final RegistryObject<Item> QUILL = ITEMS.register("quill", () -> new Item(new Item.Properties()));
+    public static final Item HEDGEHOG_SPAWN_EGG = register("hedgehog_spawn_egg", new SpawnEggItem(HedgehogEntityTypes.HEDGEHOG, 5654847, 13352614, new Item.Properties()));
+    public static final Item KIWI = register("kiwi", new ItemNameBlockItem(HedgehogBlocks.KIWI, (new Item.Properties()).food(HedgehogFoodProperties.KIWI)));
+//    public static final Item QUILL = register("quill", new Item(new Item.Properties()));
+
+    private static <I extends Item> I register(String name, I item) {
+        ITEMS.put(HedgehogMain.id(name), item);
+        return item;
+    }
+
+    public static void init() {
+        ITEMS.keySet().forEach(resourceLocation -> Registry.register(BuiltInRegistries.ITEM, resourceLocation, ITEMS.get(resourceLocation)));
+    }
 
 }

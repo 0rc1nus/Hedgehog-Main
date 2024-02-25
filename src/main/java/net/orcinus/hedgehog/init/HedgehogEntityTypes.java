@@ -1,20 +1,21 @@
 package net.orcinus.hedgehog.init;
 
+import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import net.orcinus.hedgehog.HedgehogMain;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.entities.Quill;
 
 public class HedgehogEntityTypes {
 
-    public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, HedgehogMain.MODID);
+    public static final EntityType<Hedgehog> HEDGEHOG = register("hedgehog", EntityType.Builder.of(Hedgehog::new, MobCategory.CREATURE).sized(0.5F, 0.5F).clientTrackingRange(10));
+    public static final EntityType<Quill> QUILL = register("quill", EntityType.Builder.<Quill>of(Quill::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10));
 
-    public static final RegistryObject<EntityType<Hedgehog>> HEDGEHOG = ENTITY_TYPES.register("hedgehog", () -> EntityType.Builder.of(Hedgehog::new, MobCategory.CREATURE).sized(0.7F, 0.6F).clientTrackingRange(10).build(new ResourceLocation(HedgehogMain.MODID, "hedgehog").toString()));
-    public static final RegistryObject<EntityType<Quill>> QUILL = ENTITY_TYPES.register("quill", () -> EntityType.Builder.<Quill>of(Quill::new, MobCategory.MISC).sized(0.5F, 0.5F).clientTrackingRange(4).updateInterval(10).build(new ResourceLocation(HedgehogMain.MODID, "quill").toString()));
-
+    private static <T extends Entity> EntityType<T> register(String id, EntityType.Builder<T> type) {
+        return Registry.register(BuiltInRegistries.ENTITY_TYPE, HedgehogMain.id(id), type.build(new ResourceLocation(HedgehogMain.MODID, id).toString()));
+    }
 }

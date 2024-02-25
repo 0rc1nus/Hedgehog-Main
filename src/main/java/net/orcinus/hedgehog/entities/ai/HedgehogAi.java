@@ -74,16 +74,16 @@ public class HedgehogAi {
                         return super.checkExtraStartConditions(world, mob);
                     }
                 },
-                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get()),
-                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get()),
-                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.EXPOSE_TICKS.get())
+                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_TICKS),
+                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN),
+                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.EXPOSE_TICKS)
         ));
     }
 
     public static void initIdleActivity(Brain<Hedgehog> brain) {
         brain.addActivity(Activity.IDLE, ImmutableList.of(
                 Pair.of(0, new FollowTemptation(livingEntity -> 1.25F)),
-                Pair.of(1, new AnimalMakeLove(HedgehogEntityTypes.HEDGEHOG.get(), 1.0F)),
+                Pair.of(1, new AnimalMakeLove(HedgehogEntityTypes.HEDGEHOG, 1.0F)),
                 Pair.of(2, StayCloseToTarget.create(HedgehogAi::getLikedPlayerPositionTracker, livingEntity -> livingEntity instanceof Hedgehog hedgehog && hedgehog.isTame() && !hedgehog.isOrderedToSit(), 2, 16, 1.15F)),
                 Pair.of(3, SetEntityLookTargetSometimes.create(EntityType.PLAYER, 6.0F, UniformInt.of(30, 60))),
                 Pair.of(4, BabyFollowAdult.create(UniformInt.of(5, 16), 1.25F)),

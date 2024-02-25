@@ -1,7 +1,4 @@
-package net.orcinus.hedgehog.client.models;// Made with Blockbench 4.9.4
-// Exported for Minecraft version 1.17 or later with Mojang mappings
-// Paste this class into your mod and generate all required imports
-
+package net.orcinus.hedgehog.client.models;
 
 import net.minecraft.client.model.AgeableHierarchicalModel;
 import net.minecraft.client.model.geom.ModelPart;

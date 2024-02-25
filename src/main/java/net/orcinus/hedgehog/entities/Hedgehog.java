@@ -3,12 +3,15 @@ package net.orcinus.hedgehog.entities;
 import com.google.common.collect.ImmutableList;
 import com.mojang.serialization.Dynamic;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -41,8 +44,6 @@ import net.minecraft.world.item.PotionItem;
 import net.minecraft.world.item.alchemy.PotionUtils;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
-import net.minecraftforge.event.ForgeEventFactory;
-import net.minecraftforge.registries.ForgeRegistries;
 import net.orcinus.hedgehog.entities.ai.HedgehogAi;
 import net.orcinus.hedgehog.init.HedgehogEntityTypes;
 import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
@@ -53,8 +54,8 @@ import javax.annotation.Nullable;
 import java.util.UUID;
 
 public class Hedgehog extends TamableAnimal implements EffectCarrier {
-    private static final ImmutableList<? extends SensorType<? extends Sensor<? super Hedgehog>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, HedgehogSensorTypes.HEDGEHOG_TEMPTATIONS.get(), HedgehogSensorTypes.HEDGEHOG_ATTACKABLES.get());
-    private static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.IS_PANICKING, MemoryModuleType.ITEM_PICKUP_COOLDOWN_TICKS, HedgehogMemoryModuleTypes.FARMLAND_POS.get(), HedgehogMemoryModuleTypes.CHEWING.get(), MemoryModuleType.LIKED_PLAYER, HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get(), HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get(), HedgehogMemoryModuleTypes.EXPOSE_TICKS.get());
+    private static final ImmutableList<? extends SensorType<? extends Sensor<? super Hedgehog>>> SENSOR_TYPES = ImmutableList.of(SensorType.NEAREST_LIVING_ENTITIES, SensorType.NEAREST_ADULT, SensorType.HURT_BY, HedgehogSensorTypes.HEDGEHOG_TEMPTATIONS, HedgehogSensorTypes.HEDGEHOG_ATTACKABLES);
+    private static final ImmutableList<? extends MemoryModuleType<?>> MEMORY_TYPES = ImmutableList.of(MemoryModuleType.BREED_TARGET, MemoryModuleType.NEAREST_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_LIVING_ENTITIES, MemoryModuleType.NEAREST_VISIBLE_PLAYER, MemoryModuleType.NEAREST_VISIBLE_ATTACKABLE_PLAYER, MemoryModuleType.LOOK_TARGET, MemoryModuleType.WALK_TARGET, MemoryModuleType.CANT_REACH_WALK_TARGET_SINCE, MemoryModuleType.PATH, MemoryModuleType.ATTACK_TARGET, MemoryModuleType.ATTACK_COOLING_DOWN, MemoryModuleType.NEAREST_VISIBLE_ADULT, MemoryModuleType.HURT_BY_ENTITY, MemoryModuleType.NEAREST_ATTACKABLE, MemoryModuleType.TEMPTING_PLAYER, MemoryModuleType.TEMPTATION_COOLDOWN_TICKS, MemoryModuleType.IS_TEMPTED, MemoryModuleType.IS_PANICKING, MemoryModuleType.ITEM_PICKUP_COOLDOWN_TICKS, HedgehogMemoryModuleTypes.FARMLAND_POS, HedgehogMemoryModuleTypes.CHEWING, MemoryModuleType.LIKED_PLAYER, HedgehogMemoryModuleTypes.SPLINTERING_TICKS, HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN, HedgehogMemoryModuleTypes.EXPOSE_TICKS);
     private static final EntityDataAccessor<Integer> SCARED_TICKS = SynchedEntityData.defineId(Hedgehog.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> STORED_EFFECT = SynchedEntityData.defineId(Hedgehog.class, EntityDataSerializers.STRING);
     public AnimationState splinterAnimationState = new AnimationState();
@@ -110,8 +111,24 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        UUID uUID;
+        if (tag.hasUUID("Owner")) {
+            uUID = tag.getUUID("Owner");
+        } else {
+            String string = tag.getString("Owner");
+            uUID = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), string);
+        }
+        if (uUID != null) {
+            try {
+                this.setOwnerUUID(uUID);
+                this.setTame(true);
+            }
+            catch (Throwable throwable) {
+                this.setTame(false);
+            }
+        }
         this.setScaredTicks(tag.getInt("ScaredTicks"));
-        this.setStoredEffect(ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
+        this.setStoredEffect(BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
         this.setDuration(tag.getInt("StoredDuration"));
         this.setAmplifier(tag.getInt("StoredAmplifier"));
 //        this.brushCount = tag.getInt("BrushCount");
@@ -121,8 +138,11 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("ScaredTicks", this.getScaredTicks());
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("Owner", this.getOwnerUUID());
+        }
         if (this.hasStoredEffect()) {
-            tag.putString("StoredEffect", ForgeRegistries.MOB_EFFECTS.getKey(this.getStoredEffect()).toString());
+            tag.putString("StoredEffect", BuiltInRegistries.MOB_EFFECT.getKey(this.getStoredEffect()).toString());
             tag.putInt("StoredDuration", this.getDuration());
             tag.putInt("StoredAmplifier", this.getAmplifier());
         }
@@ -177,7 +197,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Nullable
     @Override
     public AgeableMob getBreedOffspring(ServerLevel world, AgeableMob mob) {
-        Hedgehog hedgehog = HedgehogEntityTypes.HEDGEHOG.get().create(world);
+        Hedgehog hedgehog = HedgehogEntityTypes.HEDGEHOG.create(world);
         if (hedgehog != null) {
             UUID uuid = this.getOwnerUUID();
             if (uuid != null) {
@@ -207,24 +227,24 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isScared() ? null : HedgehogSoundEvents.HEDGEHOG_AMBIENT.get();
+        return this.isScared() ? null : HedgehogSoundEvents.HEDGEHOG_AMBIENT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getHurtSound(DamageSource source) {
-        return HedgehogSoundEvents.HEDGEHOG_HURT.get();
+        return HedgehogSoundEvents.HEDGEHOG_HURT;
     }
 
     @Nullable
     @Override
     protected SoundEvent getDeathSound() {
-        return HedgehogSoundEvents.HEDGEHOG_DEATH.get();
+        return HedgehogSoundEvents.HEDGEHOG_DEATH;
     }
 
     @Override
     public SoundEvent getEatingSound(ItemStack p_21202_) {
-        return HedgehogSoundEvents.HEDGEHOG_EAT.get();
+        return HedgehogSoundEvents.HEDGEHOG_EAT;
     }
 
     public int getScaredTicks() {
@@ -242,12 +262,12 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Override
     @Nullable
     public MobEffect getStoredEffect() {
-        return ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(this.entityData.get(STORED_EFFECT)));
+        return BuiltInRegistries.MOB_EFFECT.get(ResourceLocation.tryParse(this.entityData.get(STORED_EFFECT)));
     }
 
     @Override
     public void setStoredEffect(@Nullable MobEffect mobEffect) {
-        String name = mobEffect == null ? "" : ForgeRegistries.MOB_EFFECTS.getKey(mobEffect).toString();
+        String name = mobEffect == null ? "" : BuiltInRegistries.MOB_EFFECT.getKey(mobEffect).toString();
         this.entityData.set(STORED_EFFECT, name);
     }
 
@@ -316,11 +336,11 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
             } else {
                 if (this.isHiding()) {
                     this.setPose(Pose.EMERGING);
-                    this.getBrain().setMemory(HedgehogMemoryModuleTypes.EXPOSE_TICKS.get(), 8);
+                    this.getBrain().setMemory(HedgehogMemoryModuleTypes.EXPOSE_TICKS, 8);
                 }
             }
             if (this.hasPose(Pose.EMERGING)) {
-                this.getBrain().getMemory(HedgehogMemoryModuleTypes.EXPOSE_TICKS.get()).filter(integer -> integer == 0).ifPresent(integer -> {
+                this.getBrain().getMemory(HedgehogMemoryModuleTypes.EXPOSE_TICKS).filter(integer -> integer == 0).ifPresent(integer -> {
                     this.setPose(Pose.STANDING);
                 });
             }
@@ -332,7 +352,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
 //            }
 //            if (this.brushCount >= 8) {
 //                this.playSound(SoundEvents.SNIFFER_DROP_SEED);
-//                this.spawnAtLocation(HedgehogItems.QUILL.get());
+//                this.spawnAtLocation(HedgehogItems.QUILL);
 //                this.brushCount = 0;
 //            }
             if (this.getDuration() > 0) {
@@ -363,6 +383,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     protected void actuallyHurt(DamageSource damageSource, float amount) {
         super.actuallyHurt(damageSource, amount);
         if (!this.level().isClientSide && !this.isNoAi()) {
+            this.setScaredTicks(100);
             if (damageSource.getEntity() instanceof LivingEntity livingEntity) {
                 if (!(livingEntity instanceof Hedgehog)) {
                     livingEntity.hurt(this.level().damageSources().cactus(), 2.0F);
@@ -370,7 +391,6 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                 this.alertOthers(livingEntity);
                 this.transferEffects(livingEntity);
                 if (livingEntity instanceof Player player && this.getOwnerUUID() != null && player.getUUID().equals(this.getOwnerUUID())) return;
-                this.setScaredTicks(100);
                 if (!(this.getLastHurtMob() != null && this.getLastHurtMob().isAlive())) {
                     this.level().broadcastEntityEvent(this, (byte) 9);
                 }
@@ -431,7 +451,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
         }  else if (this.isTame()) {
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                this.heal((float)itemStack.getFoodProperties(this).getNutrition());
+                this.heal((float) item.getFoodProperties().getNutrition());
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
@@ -477,7 +497,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
         if (!player.getAbilities().instabuild) {
             itemStack.shrink(1);
         }
-        if (this.random.nextInt(3) == 0 && !ForgeEventFactory.onAnimalTame(this, player)) {
+        if (this.random.nextInt(3) == 0) {
             this.tame(player);
             this.navigation.stop();
             this.setTarget(null);

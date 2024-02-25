@@ -1,13 +1,13 @@
 package net.orcinus.hedgehog.client.animations;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.animation.AnimationChannel;
 import net.minecraft.client.animation.AnimationDefinition;
 import net.minecraft.client.animation.Keyframe;
 import net.minecraft.client.animation.KeyframeAnimations;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
-@OnlyIn(Dist.CLIENT)
+@Environment(EnvType.CLIENT)
 public class HedgehogAnimations {
 
         public static final AnimationDefinition HEDGEHOG_SPLINTER = AnimationDefinition.Builder.withLength(0.375F).looping()
