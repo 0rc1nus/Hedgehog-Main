@@ -1,50 +1,84 @@
 {
-  "entity.hedgehog.ambient": {
-    "sounds": [
-      "hedgehog:entity/hedgehog/ambient",
-      "hedgehog:entity/hedgehog/ambient1",
-      "hedgehog:entity/hedgehog/ambient2",
-      "hedgehog:entity/hedgehog/ambient3"
-    ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.ambient"
-  },
-  "entity.hedgehog.scared": {
-    "sounds": [
-      "hedgehog:entity/hedgehog/scared",
-      "hedgehog:entity/hedgehog/scared1",
-      "hedgehog:entity/hedgehog/scared2",
-      "hedgehog:entity/hedgehog/scared3"
-    ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.scared"
-  },
-  "entity.hedgehog.eat": {
-    "sounds": [
-      "minecraft:mob/fox/eat1",
-      "minecraft:mob/fox/eat2",
-      "minecraft:mob/fox/eat3"
-    ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.eat"
-  },
-  "entity.hedgehog.hurt": {
-    "sounds": [
-      "hedgehog:entity/hedgehog/hurt"
-    ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.hurt"
-  },
-  "entity.hedgehog.death": {
-    "sounds": [
-      "hedgehog:entity/hedgehog/death"
-    ],
-    "subtitle": "subtitles.entity.hedgehog.hedgehog.death"
-  },
-  "entity.quill.land": {
-    "sounds": [
-      {
-        "name": "minecraft:block.mangrove_root.break",
-        "type": "event",
-        "volume": 0.4
-      }
-    ],
-    "subtitle": "subtitles.entity.quill.land"
-  }
+	"entity.hedgehog.idle": {
+		"sounds": [
+			{
+				"name": "hedgehog:entity/hedgehog/idle1",
+				"volume": 0.1,
+				"pitch": 1.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle2",
+				"volume": 0.1,
+				"pitch": 1.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle3",
+				"volume": 0.1,
+				"pitch": 1.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle4",
+				"volume": 0.1,
+				"pitch": 1.1
+			}
+		],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.idle"
+	},
+	"entity.hedgehog.splinter": {
+		"sounds": [
+			"hedgehog:entity/hedgehog/scared",
+			"hedgehog:entity/hedgehog/scared1",
+			"hedgehog:entity/hedgehog/scared2",
+			"hedgehog:entity/hedgehog/scared3"
+		],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.splinter"
+	},
+	"entity.hedgehog.eat": {
+		"sounds": [
+			"minecraft:mob/fox/eat1",
+			"minecraft:mob/fox/eat2",
+			"minecraft:mob/fox/eat3"
+		],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.eat"
+	},
+	"entity.hedgehog.hurt": {
+		"sounds": [
+			{
+				"name": "hedgehog:entity/hedgehog/hurt1",
+				"pitch": 1.2,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/hurt2",
+				"pitch": 1.2,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/hurt3",
+				"pitch": 1.2,
+				"volume": 0.6
+			}
+		],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.hurt"
+	},
+	"entity.hedgehog.death": {
+		"sounds": [
+			{
+				"name": "hedgehog:entity/hedgehog/death",
+				"pitch": 1.1,
+				"volume": 0.6
+			}
+		],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.death"
+	},
+	"entity.quill.land": {
+		"sounds": [
+			{
+				"name": "minecraft:block.mangrove_root.break",
+				"type": "event",
+				"volume": 0.4
+			}
+		],
+		"subtitle": "subtitles.entity.quill.land"
+	}
 }

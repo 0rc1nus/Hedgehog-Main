@@ -13,7 +13,7 @@ public class HedgehogSoundEvents {
 
     public static final DeferredRegister<SoundEvent> SOUND_EVENTS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, HedgehogMain.MODID);
 
-    public static final RegistryObject<SoundEvent> HEDGEHOG_AMBIENT = register("entity.hedgehog.ambient");
+    public static final RegistryObject<SoundEvent> HEDGEHOG_IDLE = register("entity.hedgehog.idle");
     public static final RegistryObject<SoundEvent> HEDGEHOG_HURT = register("entity.hedgehog.hurt");
     public static final RegistryObject<SoundEvent> HEDGEHOG_DEATH = register("entity.hedgehog.death");
     public static final RegistryObject<SoundEvent> HEDGEHOG_EAT = register("entity.hedgehog.eat");
