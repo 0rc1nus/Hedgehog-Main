@@ -75,7 +75,8 @@ public class HedgehogAi {
                     }
                 },
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_TICKS.get()),
-                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get())
+                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN.get()),
+                new CountDownCooldownTicks(HedgehogMemoryModuleTypes.EXPOSE_TICKS.get())
         ));
     }
 

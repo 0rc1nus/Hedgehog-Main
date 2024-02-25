@@ -26,5 +26,6 @@ public class HedgehogMemoryModuleTypes {
     public static final RegistryObject<MemoryModuleType<BlockPos>> FARMLAND_POS = MEMORY_MODULE_TYPES.register("farmland_pos", () -> new MemoryModuleType<>(Optional.of(BlockPos.CODEC)));
     public static final RegistryObject<MemoryModuleType<Integer>> SPLINTERING_TICKS = MEMORY_MODULE_TYPES.register("splintering_ticks", () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
     public static final RegistryObject<MemoryModuleType<Integer>> SPLINTERING_COOLDOWN = MEMORY_MODULE_TYPES.register("splintering_cooldown", () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
+    public static final RegistryObject<MemoryModuleType<Integer>> EXPOSE_TICKS = MEMORY_MODULE_TYPES.register("expose_ticks", () -> new MemoryModuleType<>(Optional.of(Codec.INT)));
 
 }
