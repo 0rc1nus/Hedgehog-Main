@@ -1,37 +1,13 @@
 {
-	"entity.hedgehog.idle": {
+	"entity.hedgehog.death": {
 		"sounds": [
 			{
-				"name": "hedgehog:entity/hedgehog/idle1",
-				"volume": 0.1,
-				"pitch": 1.1
-			},
-			{
-				"name": "hedgehog:entity/hedgehog/idle2",
-				"volume": 0.1,
-				"pitch": 1.1
-			},
-			{
-				"name": "hedgehog:entity/hedgehog/idle3",
-				"volume": 0.1,
-				"pitch": 1.1
-			},
-			{
-				"name": "hedgehog:entity/hedgehog/idle4",
-				"volume": 0.1,
-				"pitch": 1.1
+				"name": "hedgehog:entity/hedgehog/death",
+				"pitch": 1.1,
+				"volume": 0.6
 			}
 		],
-		"subtitle": "subtitles.entity.hedgehog.hedgehog.idle"
-	},
-	"entity.hedgehog.splinter": {
-		"sounds": [
-			"hedgehog:entity/hedgehog/scared",
-			"hedgehog:entity/hedgehog/scared1",
-			"hedgehog:entity/hedgehog/scared2",
-			"hedgehog:entity/hedgehog/scared3"
-		],
-		"subtitle": "subtitles.entity.hedgehog.hedgehog.splinter"
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.death"
 	},
 	"entity.hedgehog.eat": {
 		"sounds": [
@@ -61,15 +37,34 @@
 		],
 		"subtitle": "subtitles.entity.hedgehog.hedgehog.hurt"
 	},
-	"entity.hedgehog.death": {
+	"entity.hedgehog.idle": {
 		"sounds": [
 			{
-				"name": "hedgehog:entity/hedgehog/death",
+				"name": "hedgehog:entity/hedgehog/idle1",
 				"pitch": 1.1,
-				"volume": 0.6
+				"volume": 0.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle2",
+				"pitch": 1.1,
+				"volume": 0.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle3",
+				"pitch": 1.1,
+				"volume": 0.1
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/idle4",
+				"pitch": 1.1,
+				"volume": 0.1
 			}
 		],
-		"subtitle": "subtitles.entity.hedgehog.hedgehog.death"
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.idle"
+	},
+	"entity.hedgehog.start_shooting_quills": {
+		"sounds": [],
+		"subtitle": "subtitles.entity.hedgehog.hedgehog.start_shooting_quills"
 	},
 	"entity.quill.land": {
 		"sounds": [
@@ -80,5 +75,38 @@
 			}
 		],
 		"subtitle": "subtitles.entity.quill.land"
+	},
+	"entity.quill.shoot": {
+		"sounds": [
+			{
+				"name": "hedgehog:entity/hedgehog/shoot1",
+				"pitch": 1.2,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/shoot1",
+				"pitch": 1.4,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/shoot1",
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/shoot2",
+				"pitch": 1.2,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/shoot2",
+				"pitch": 1.4,
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/shoot2",
+				"volume": 0.6
+			}
+		],
+		"subtitle": "subtitles.entity.quill.shoot"
 	}
 }

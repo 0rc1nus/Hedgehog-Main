@@ -17,9 +17,10 @@ import net.minecraft.world.phys.Vec3;
 import net.orcinus.hedgehog.entities.Hedgehog;
 import net.orcinus.hedgehog.entities.Quill;
 import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
-import net.orcinus.hedgehog.init.HedgehogSoundEvents;
 
 import java.util.Optional;
+
+import static net.orcinus.hedgehog.init.HedgehogSoundEvents.*;
 
 public class Splinter extends Behavior<Hedgehog> {
     private static final int DURATION = 100;
@@ -56,9 +57,9 @@ public class Splinter extends Behavior<Hedgehog> {
         hedgehog.setPose(Pose.SPIN_ATTACK);
         if (!hedgehog.isScared()) {
             hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(livingEntity -> {
-                BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1.0F, 3);
+                BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1, 3);
             });
-            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_SPLINTER.get(), 1.0F, 1.0F);
+            hedgehog.playSound(HEDGEHOG_START_SHOOTING_QUILLS.get(), 1, 1);
         }
     }
 
@@ -78,14 +79,14 @@ public class Splinter extends Behavior<Hedgehog> {
                     quill.transferValues(hedgehog.getDuration(), hedgehog.getAmplifier());
                 }
                 quill.moveTo(hedgehog.getX(), hedgehog.getEyeY(), hedgehog.getZ());
-                float range = Mth.nextFloat(random, 2.0F, 6.0F);
+                float range = Mth.nextFloat(random, 2, 6);
                 Vec3 vec3 = new Vec3(random.nextGaussian() / range, 0.1F, random.nextGaussian() / range).normalize();
                 Vec3 vec31 = vec3.scale(0.75D);
                 quill.setDeltaMovement(vec31);
                 quill.setBaseDamage(4);
                 world.addFreshEntity(quill);
             }
-            hedgehog.playSound(SoundEvents.SNIFFER_DROP_SEED, 1.0F, 1.0F);
+            hedgehog.playSound(QUILL_SHOOT.get(), 1, 1);
         }
     }
 
