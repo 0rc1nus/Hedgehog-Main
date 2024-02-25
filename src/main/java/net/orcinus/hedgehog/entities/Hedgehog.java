@@ -227,7 +227,7 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Nullable
     @Override
     protected SoundEvent getAmbientSound() {
-        return this.isScared() ? null : HedgehogSoundEvents.HEDGEHOG_AMBIENT;
+        return this.isScared() ? null : HedgehogSoundEvents.HEDGEHOG_IDLE;
     }
 
     @Nullable

@@ -67,13 +67,6 @@ public class HedgehogAi {
                 new AnimalPanic(1.25F, SHOULD_PANIC),
                 new Sit(),
                 new LookAtTargetSink(45, 90),
-                new MoveToTargetSink() {
-                    @Override
-                    protected boolean checkExtraStartConditions(ServerLevel world, Mob mob) {
-                        if (mob instanceof Hedgehog hedgehog && hedgehog.cannotWalk()) return false;
-                        return super.checkExtraStartConditions(world, mob);
-                    }
-                },
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_TICKS),
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN),
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.EXPOSE_TICKS)

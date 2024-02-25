@@ -13,11 +13,12 @@ public class HedgehogSoundEvents {
 
     private static final Map<ResourceLocation, SoundEvent> SOUND_EVENTS = Maps.newLinkedHashMap();
 
-    public static final SoundEvent HEDGEHOG_AMBIENT = register("entity.hedgehog.ambient");
+    public static final SoundEvent HEDGEHOG_IDLE = register("entity.hedgehog.idle");
     public static final SoundEvent HEDGEHOG_HURT = register("entity.hedgehog.hurt");
     public static final SoundEvent HEDGEHOG_DEATH = register("entity.hedgehog.death");
     public static final SoundEvent HEDGEHOG_EAT = register("entity.hedgehog.eat");
-    public static final SoundEvent HEDGEHOG_SPLINTER = register("entity.hedgehog.splinter");
+    public static final SoundEvent HEDGEHOG_START_SHOOTING_QUILLS = register("entity.hedgehog.start_shooting_quills");
+    public static final SoundEvent QUILL_SHOOT = register("entity.quill.shoot");
     public static final SoundEvent QUILL_LAND = register("entity.quill.land");
 
     public static SoundEvent register(String id) {

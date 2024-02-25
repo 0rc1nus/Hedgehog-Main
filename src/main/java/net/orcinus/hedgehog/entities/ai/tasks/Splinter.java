@@ -58,7 +58,7 @@ public class Splinter extends Behavior<Hedgehog> {
             hedgehog.getBrain().getMemory(MemoryModuleType.ATTACK_TARGET).ifPresent(livingEntity -> {
                 BehaviorUtils.setWalkAndLookTargetMemories(hedgehog, livingEntity, 1.0F, 3);
             });
-            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_SPLINTER, 1.0F, 1.0F);
+            hedgehog.playSound(HedgehogSoundEvents.HEDGEHOG_START_SHOOTING_QUILLS, 1.0F, 1.0F);
         }
     }
 

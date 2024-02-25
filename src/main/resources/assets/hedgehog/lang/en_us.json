@@ -6,7 +6,7 @@
   "item.hedgehog.kiwi": "Kiwi",
   "item.hedgehog.quill": "Quill",
   "item.hedgehog.hedgehog_spawn_egg": "Hedgehog Spawn Egg",
-  "subtitles.entity.hedgehog.hedgehog.ambient": "Hedgehog sniffs",
+  "subtitles.entity.hedgehog.hedgehog.idle": "Hedgehog sniffs",
   "subtitles.entity.hedgehog.hedgehog.scared": "Hedgehog hisses",
   "subtitles.entity.hedgehog.hedgehog.eat": "Hedgehog munches",
   "subtitles.entity.hedgehog.hedgehog.hurt": "Hedgehog hurts",
