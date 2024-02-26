@@ -11,9 +11,18 @@
 	},
 	"entity.hedgehog.eat": {
 		"sounds": [
-			"minecraft:mob/fox/eat1",
-			"minecraft:mob/fox/eat2",
-			"minecraft:mob/fox/eat3"
+			{
+				"name": "hedgehog:entity/hedgehog/eat1",
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/eat2",
+				"volume": 0.6
+			},
+			{
+				"name": "hedgehog:entity/hedgehog/eat3",
+				"volume": 0.6
+			}
 		],
 		"subtitle": "subtitles.entity.hedgehog.hedgehog.eat"
 	},
