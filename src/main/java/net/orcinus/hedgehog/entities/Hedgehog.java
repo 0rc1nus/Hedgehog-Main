@@ -424,16 +424,21 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     public InteractionResult mobInteract(Player player, InteractionHand hand) {
         ItemStack itemStack = player.getItemInHand(hand);
         Item item = itemStack.getItem();
-        if (!this.level().isClientSide && itemStack.is(Items.BRUSH)) {
-            player.startUsingItem(hand);
-            return InteractionResult.PASS;
+//        if (!this.level().isClientSide && itemStack.is(Items.BRUSH)) {
+//            player.startUsingItem(hand);
+//            return InteractionResult.PASS;
+//        }
+        if (!this.isSilent() && this.isFood(itemStack)) {
+            this.level().playSound(null, this.getX(), this.getY(), this.getZ(), this.getEatingSound(itemStack), this.getSoundSource(), 1.0F, 1.0F + (this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
         }
         if (this.level().isClientSide) {
             boolean flag = this.isOwnedBy(player) || this.isTame() || this.isFood(itemStack) && !this.isTame() && !this.isScared();
             return flag ? InteractionResult.CONSUME : InteractionResult.PASS;
-        }  else if (this.isTame()) {
+        }
+        if (this.isTame()) {
+            InteractionResult interactionResult;
             if (this.isFood(itemStack) && this.getHealth() < this.getMaxHealth()) {
-                this.heal((float)itemStack.getFoodProperties(this).getNutrition());
+                this.heal((float) item.getFoodProperties().getNutrition());
                 if (!player.getAbilities().instabuild) {
                     itemStack.shrink(1);
                 }
@@ -451,28 +456,17 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
                     }
                     return InteractionResult.SUCCESS;
                 }
-
-                InteractionResult interactionresult = super.mobInteract(player, hand);
-                if ((!interactionresult.consumesAction() || this.isBaby()) && this.isOwnedBy(player)) {
-                    this.setOrderedToSit(!this.isOrderedToSit());
-                    this.jumping = false;
-                    this.navigation.stop();
-                    this.setTarget(null);
-                    return InteractionResult.SUCCESS;
-                } else {
-                    return interactionresult;
-                }
             }
-        } else if (this.isFood(itemStack) && !this.isScared()) {
-            this.tame(player, itemStack);
+            if ((interactionResult = super.mobInteract(player, hand)).consumesAction() && !this.isBaby() || !this.isOwnedBy(player)) return interactionResult;
+            this.setOrderedToSit(!this.isOrderedToSit());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setTarget(null);
             return InteractionResult.SUCCESS;
-        } else {
-            InteractionResult interactionresult = super.mobInteract(player, hand);
-            if (interactionresult.consumesAction() && this.isFood(itemStack)) {
-                this.level().playSound(null, this, this.getEatingSound(itemStack), SoundSource.NEUTRAL, 1.0F, Mth.randomBetween(this.level().random, 0.8F, 1.2F));
-            }
-            return interactionresult;
         }
+        if (!this.isFood(itemStack) || this.isScared()) return super.mobInteract(player, hand);
+        this.tame(player, itemStack);
+        return InteractionResult.SUCCESS;
     }
 
     private void tame(Player player, ItemStack itemStack) {
