@@ -9,6 +9,7 @@ import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.players.OldUsersConverter;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
@@ -112,6 +113,22 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     @Override
     public void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
+        UUID uUID;
+        if (tag.hasUUID("Owner")) {
+            uUID = tag.getUUID("Owner");
+        } else {
+            String string = tag.getString("Owner");
+            uUID = OldUsersConverter.convertMobOwnerIfNecessary(this.getServer(), string);
+        }
+        if (uUID != null) {
+            try {
+                this.setOwnerUUID(uUID);
+                this.setTame(true);
+            }
+            catch (Throwable throwable) {
+                this.setTame(false);
+            }
+        }
         this.setScaredTicks(tag.getInt("ScaredTicks"));
         this.setStoredEffect(ForgeRegistries.MOB_EFFECTS.getValue(ResourceLocation.tryParse(tag.getString("StoredEffect"))));
         this.setDuration(tag.getInt("StoredDuration"));
@@ -123,6 +140,9 @@ public class Hedgehog extends TamableAnimal implements EffectCarrier {
     public void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
         tag.putInt("ScaredTicks", this.getScaredTicks());
+        if (this.getOwnerUUID() != null) {
+            tag.putUUID("Owner", this.getOwnerUUID());
+        }
         if (this.hasStoredEffect()) {
             tag.putString("StoredEffect", ForgeRegistries.MOB_EFFECTS.getKey(this.getStoredEffect()).toString());
             tag.putInt("StoredDuration", this.getDuration());
