@@ -10,10 +10,8 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.behavior.AnimalMakeLove;
-import net.minecraft.world.entity.ai.behavior.AnimalPanic;
 import net.minecraft.world.entity.ai.behavior.BabyFollowAdult;
 import net.minecraft.world.entity.ai.behavior.CountDownCooldownTicks;
 import net.minecraft.world.entity.ai.behavior.DoNothing;
@@ -43,13 +41,8 @@ import net.orcinus.hedgehog.init.HedgehogMemoryModuleTypes;
 
 import java.util.Optional;
 import java.util.UUID;
-import java.util.function.Predicate;
 
 public class HedgehogAi {
-    private static final Predicate<PathfinderMob> SHOULD_PANIC = (mob) -> {
-        if (mob instanceof Hedgehog hedgehog && hedgehog.isTame()) return false;
-        return mob.getLastHurtByMob() != null || mob.isFreezing() || mob.isOnFire();
-    };
 
     public static Brain<?> makeBrain(Brain<Hedgehog> brain) {
         initCoreActivity(brain);
@@ -64,9 +57,15 @@ public class HedgehogAi {
     public static void initCoreActivity(Brain<Hedgehog> brain) {
         brain.addActivity(Activity.CORE, 0, ImmutableList.of(
                 new Swim(0.8F),
-                new AnimalPanic(1.25F, SHOULD_PANIC),
                 new Sit(),
                 new LookAtTargetSink(45, 90),
+                new MoveToTargetSink() {
+                    @Override
+                    protected boolean checkExtraStartConditions(ServerLevel serverLevel, Mob mob) {
+                        if (mob instanceof Hedgehog hedgehog && hedgehog.cannotWalk()) return false;
+                        return super.checkExtraStartConditions(serverLevel, mob);
+                    }
+                },
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_TICKS),
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.SPLINTERING_COOLDOWN),
                 new CountDownCooldownTicks(HedgehogMemoryModuleTypes.EXPOSE_TICKS)
