@@ -3,12 +3,12 @@
 	"id": "hedgehog",
 	"version": "${version}",
 	"name": "Hedgehog",
-	"description": "This mod aims to improve the wild update",
+	"description": "This mod adds hedgehogs",
 	"authors": [
-		"Orcinus",
-		"Ninni"
+		"Orcinus"
 	],
 	"contributors": [
+		"Ninni",
 		"bunten"
 	],
 	"contact": {
